@@ -31,15 +31,10 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   getCredentials() async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var token = localStorage.getString('token');
-    var user = localStorage.getString('userData');
-    print("tokenInfo = $token");
-    print("userInfo = $user");
+     SharedPreferences localStorage = await SharedPreferences.getInstance();
     setState(() {
       store.state.userDataState =
           json.decode(localStorage.getString('userData')!);
-      print('.....${store.state.userDataState}');
     });
     cityId = store.state.userDataState['customer']['cityId'];
     zoneId = store.state.userDataState['customer']['zoneId'];
