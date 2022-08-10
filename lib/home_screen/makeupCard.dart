@@ -19,16 +19,23 @@ class _MakeupCardState extends State<MakeupCard> {
         horizontal: 14 * SizeConfig.imageSizeMultiplier,
         vertical: 11.5 * SizeConfig.heightMultiplier,
       ),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(store.state.mainSliderState['promotionalCards'][0]
-              ['image']), // store.state.isLoadingState == true ?
-          //AssetImage("assets/images/best-skin-care.jpg")
-          //:
-          fit: BoxFit.cover,
-        ),
-        borderRadius: BorderRadius.circular(15),
-      ),
+      decoration: store.state.isLoadingState == true
+          ? BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("assets/images/best-skin-care.jpg"),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(15),
+            )
+          : BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(store
+                    .state.mainSliderState['promotionalCards'][0]['image']), //
+                //:
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(15),
+            ),
     );
   }
 }

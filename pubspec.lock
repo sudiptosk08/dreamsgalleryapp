@@ -132,13 +132,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  flutter_sslcommerz:
-    dependency: "direct main"
-    description:
-      name: flutter_sslcommerz
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.2-nullsafety.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -232,7 +225,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "3.1.1"
   matcher:
     dependency: transitive
     description:
@@ -434,6 +427,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  sslcommerz_flutter:
+    dependency: "direct main"
+    description:
+      name: sslcommerz_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   stack_trace:
     dependency: transitive
     description:

@@ -1,4 +1,11 @@
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:dream_gallary/api/api.dart';
 import 'package:dream_gallary/constant.dart';
 import 'package:dream_gallary/model/notification_setting.dart';
@@ -6,19 +13,10 @@ import 'package:dream_gallary/redux/action.dart';
 import 'package:dream_gallary/screen/checkout/orderSuccessfull.dart';
 import 'package:dream_gallary/screen/checkout/paymentCancel.dart';
 import 'package:dream_gallary/screen/checkout/paymentSuccessfull.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_sslcommerz/model/SSLCAdditionalInitializer.dart';
-import 'package:flutter_sslcommerz/model/SSLCCustomerInfoInitializer.dart';
-import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
-import 'package:flutter_sslcommerz/model/SSLCShipmentInfoInitializer.dart';
-import 'package:flutter_sslcommerz/model/SSLCTransactionInfoModel.dart';
-import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
-import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
-import 'package:flutter_sslcommerz/sslcommerz.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:dream_gallary/screen/payment/ssl_commerz.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:sslcommerz_flutter/model/SSLCTransactionInfoModel.dart';
+
 import '../../k_text_style.dart';
 import '../../main.dart';
 import '../../size_config.dart';
@@ -96,7 +94,7 @@ class _CheckOutState extends State<CheckOut> {
       });
   }
 
-   Future<void> _getAllShippingDetails() async {
+  Future<void> _getAllShippingDetails() async {
     cityId = store.state.userDataState['customer']['cityId'];
     zoneId = store.state.userDataState['customer']['zoneId'];
     areaId = store.state.userDataState['customer']['areaId'];
@@ -124,7 +122,6 @@ class _CheckOutState extends State<CheckOut> {
           value.where((areaItem) => areaItem['zone_id'] == zoneId).toList();
     });
   }
-
 
   @override
   void dispose() {
@@ -2572,10 +2569,7 @@ class _CheckOutState extends State<CheckOut> {
   }
 
   Future<void> placeOrder() async {
-    var ssl_store_id_live = 'dreamsgallerybdlive';
-    var ssl_store_id_sandbox = 'dream5ecf34aa69953';
-    var ssl_store_password_live = '5EA6BBABE216A23577';
-    var ssl_store_password_sandbox = 'dream5ecf34aa69953@ssl';
+
     dynamic newAddress = {
       'name': recipientName.text,
       'email': recipientEmail.text,
@@ -2691,65 +2685,33 @@ class _CheckOutState extends State<CheckOut> {
       store.state.referralCodeState = null;
       store.state.giftVoucherState = null;
       if (data['paymentType'] == 'sslcommerz') {
-        var tran_id = "PX${body['order']['id'].toString()}";
+        var tranId = "PX${body['order']['id'].toString()}";
         var grandTotal = double.parse(data['grandTotal']) +
             double.parse(data['shippingPrice'].toString());
-        // var tran_id = body['order']['id'];
-        Sslcommerz sslcommerz = Sslcommerz(
-                initializer: SSLCommerzInitialization(
-                    //Use the ipn if you have valid one, or it will fail the transaction.
-                    ipn_url: "https://dreamsgallerybd.com/app/clearPayment",
-                    multi_card_name: '',
-                    currency: SSLCurrencyType.BDT,
-                    product_category: "Cosmetics",
-                    sdkType: SSLCSdkType.LIVE,
-                    store_id: ssl_store_id_live,
-                    store_passwd: ssl_store_password_live,
-                    total_amount: grandTotal,
-                    tran_id: tran_id))
-            .addAdditionalInitializer(
-                sslcAdditionalInitializer: SSLCAdditionalInitializer(
-                    valueA: body['order']['id'].toString()))
-            .addCustomerInfoInitializer(
-                customerInfoInitializer: SSLCCustomerInfoInitializer(
-                    customerState: city.toString(),
-                    customerName: fullName,
-                    customerEmail: email,
-                    customerAddress1: fullAddress,
-                    customerCity: city.toString(),
-                    customerPostCode: postalCode,
-                    customerCountry: "Bangladesh",
-                    customerPhone: phone))
-            .addShipmentInfoInitializer(
-                sslcShipmentInfoInitializer: SSLCShipmentInfoInitializer(
-                    shipmentMethod: "yes",
-                    numOfItems: total,
-                    shipmentDetails: ShipmentDetails(
-                        shipAddress1: fullAddress,
-                        shipCity: city.toString(),
-                        shipCountry: "Bangladesh",
-                        shipName: fullAddress,
-                        shipPostCode: postalCode)));
 
-        var result = await sslcommerz.payNow();
-        print('result of ssl');
-        print(result);
-        print(result.message.toString());
+        var result = await EasySSLCommerz(
+          tranId: tranId,
+          amount: grandTotal.toDouble(),
+          customerAddress1: fullAddress,
+          customerCity: city,
+          customerCountry: "Bangladesh",
+          customerEmail: email,
+          customerPhone: phone.toString(),
+          customerPostCode: postalCode.toString(),
+        ).payNow();
         if (result is PlatformException) {
           print("the response is: " +
               result.message.toString() +
               " code: " +
               result.code);
           Navigator.pushAndRemoveUntil<void>(
-            context,
-            MaterialPageRoute<void>(
-                builder: (BuildContext context) => PaymentCancel()),
-            ModalRoute.withName('/'),
-          );
+              context,
+              MaterialPageRoute<void>(
+                  builder: (BuildContext context) => PaymentCancel()),
+              ModalRoute.withName('/'));
         } else {
-          SSLCTransactionInfoModel model = result;
-          print('model--------- status');
-          print(model.status);
+          SSLCTransactionInfoModel model = result as SSLCTransactionInfoModel;
+          print("SSLCTransactionInfoModel: $model");
           if (model.status == "VALID") {
             Navigator.pushAndRemoveUntil<void>(
               context,
@@ -2765,14 +2727,6 @@ class _CheckOutState extends State<CheckOut> {
               ModalRoute.withName('/'),
             );
           }
-          // Fluttertoast.showToast(
-          //     msg: "Transaction successful: Amount ${model.amount} TK",
-          //     toastLength: Toast.LENGTH_SHORT,
-          //     gravity: ToastGravity.CENTER,
-          //     timeInSecForIosWeb: 1,
-          //     backgroundColor: Colors.black,
-          //     textColor: Colors.white,
-          //     fontSize: 16.0);
         }
       } else {
         Navigator.pushAndRemoveUntil<void>(

@@ -3,7 +3,6 @@ import 'package:dream_gallary/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 import 'package:dream_gallary/redux/reducer.dart';
 import 'package:dream_gallary/redux/state.dart';
 import 'package:redux/redux.dart';

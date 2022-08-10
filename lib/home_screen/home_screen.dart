@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:dream_gallary/api/api.dart';
 import 'package:dream_gallary/component/floatingActionButton.dart';
 import 'package:dream_gallary/home_screen/home_body.dart';
 import 'package:dream_gallary/redux/action.dart';
