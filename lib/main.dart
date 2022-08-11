@@ -1,3 +1,5 @@
+// @dart=2.9
+import 'src/my_app.dart';
 import 'package:dream_gallary/myhomepage.dart';
 import 'package:dream_gallary/size_config.dart';
 import 'package:flutter/material.dart';
