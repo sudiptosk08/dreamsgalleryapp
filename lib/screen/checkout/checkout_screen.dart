@@ -2699,6 +2699,7 @@ class _CheckOutState extends State<CheckOut> {
           customerPhone: phone.toString(),
           customerPostCode: postalCode.toString(),
         ).payNow();
+        
         if (result is PlatformException) {
           print("the response is: " +
               result.message.toString() +
@@ -2719,7 +2720,7 @@ class _CheckOutState extends State<CheckOut> {
                   builder: (BuildContext context) => PaymentSuccessfull()),
               ModalRoute.withName('/'),
             );
-          } else {
+          } else{
             Navigator.pushAndRemoveUntil<void>(
               context,
               MaterialPageRoute<void>(
