@@ -1911,7 +1911,7 @@ class _CartScreenState extends State<CartScreen> {
                   ]),
                 ),
               )
-            : Container(
+            :store.state.isLoadingState == true ?CircularProgressIndicator(): Container(
                 alignment: Alignment.center,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

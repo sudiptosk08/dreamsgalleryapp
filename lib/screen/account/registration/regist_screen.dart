@@ -9,21 +9,30 @@ class RegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:store.state.darkModeState == null || store.state.darkModeState == false ? Colors.white :  Color(0xFF0F0E0E),
-      appBar:AppBar(
-        backgroundColor:store.state.darkModeState == null || store.state.darkModeState == false ? Colors.white :  Color(0xFF0F0E0E),
+      backgroundColor: store.state.darkModeState == null ||
+              store.state.darkModeState == false
+          ? Colors.white
+          : Color(0xFF0F0E0E),
+      appBar: AppBar(
+        backgroundColor: store.state.darkModeState == null ||
+                store.state.darkModeState == false
+            ? Colors.white
+            : Color(0xFF0F0E0E),
         elevation: 0.0,
         leading: Padding(
-          padding:  EdgeInsets.all(12.0),
+          padding: EdgeInsets.all(12.0),
           child: IconButton(
               icon: Icon(
                 Icons.arrow_back_ios,
                 size: 6 * SizeConfig.imageSizeMultiplier,
-                color:store.state.darkModeState == null || store.state.darkModeState == false ?
-                Colors.black : Colors.grey[400],
+                color: store.state.darkModeState == null ||
+                        store.state.darkModeState == false
+                    ? Colors.black
+                    : Colors.grey[400],
               ),
               onPressed: () {
                 Navigator.pop(context);
+                store.state.logoutUserData = null;
               }),
         ),
         centerTitle: true,
@@ -47,7 +56,7 @@ class RegistrationScreen extends StatelessWidget {
                     ),
                     child: Padding(
                       padding:
-                      EdgeInsets.all(4.4 * SizeConfig.imageSizeMultiplier),
+                          EdgeInsets.all(4.4 * SizeConfig.imageSizeMultiplier),
                       child: SvgPicture.asset("assets/icons/DG SVG.svg"),
                     ),
                   ),

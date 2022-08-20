@@ -90,9 +90,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    setState(() {
-      store.dispatch(IsLoadingAction(false)); //false chilo
-    });
+    
   }
 
   Future<void> _getVariableProduct() async {
@@ -139,9 +137,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    setState(() {
-      store.dispatch(IsLoadingAction(false)); //false chilo
-    });
+   
     List.generate(
         store.state.singleProductColor.length,
         (index) => getSingleProductColor =
@@ -162,9 +158,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    setState(() {
-      store.dispatch(IsLoadingAction(false)); //false chilo
-    });
+    
     List.generate(
         store.state.singleProductSize.length,
         (index) => getSingleProductSize =
@@ -185,9 +179,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    setState(() {
-      store.dispatch(IsLoadingAction(false));
-    });
+   
   }
 
   Future<void> _getProductId() async {
@@ -212,12 +204,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    setState(() {
-      store.dispatch(IsLoadingAction(false));
-    });
-    print(1.75 * SizeConfig.textMultiplier);
-    print(3.95 * SizeConfig.imageSizeMultiplier);
-    print(1.9 * SizeConfig.imageSizeMultiplier);
+   
   }
 
   Future<void> _getAllImages() async {
@@ -234,6 +221,9 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
+    setState(() {
+      store.dispatch(IsLoadingAction(false));
+    });
     List.generate(store.state.allImageState.length, (index) => index = index);
   }
 
@@ -254,9 +244,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    return store.state.isLoadingState == true
-        ? CircularProgressIndicator()
-        : WillPopScope(
+    return store.state.isLoadingState == false
+        ? WillPopScope(
             onWillPop: () async {
               print("Back button press");
               store.state.ratingState = null;
@@ -943,7 +932,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                                 ],
                               ),
                             ),
-                            (store.state.getVariableProductState != null)
+                            (store.state.getVariableProductState != null && store.state.userDataState == null)
                                 ? InkWell(
                                     onTap: () {
                                       setState(() {
@@ -1045,7 +1034,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                       ],
                     )),
               ),
-            ));
+            ))
+        : CircularProgressIndicator();
   }
 
   showCustomSizeDialog(BuildContext context) => showDialog(
@@ -1357,7 +1347,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     var body = json.decode(res.body);
     print('body - $body');
     print('res.statusCode  - ${res.statusCode}');
-   
   }
 
   Future<void> getVariableProduct() async {

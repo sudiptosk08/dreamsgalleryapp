@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dream_gallary/api/api.dart';
 import 'package:dream_gallary/k_text_style.dart';
 import 'package:dream_gallary/redux/action.dart';

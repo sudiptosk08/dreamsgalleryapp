@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
     var resAllSliders = await CallApi().withoutTokengetData('/app/allSliders');
     if (resAllSliders.statusCode == 200) {
       var body = json.decode(resAllSliders.body);
+
       setState(() {
         store.dispatch(MainSliderAction(body));
       });

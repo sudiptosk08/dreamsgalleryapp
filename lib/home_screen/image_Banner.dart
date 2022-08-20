@@ -30,20 +30,8 @@ class _ImageSliderState extends State<ImageSlider> {
       width: double.infinity,
       decoration:
           BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10))),
-      child: store.state.isLoadingState == true
-          ? Shimmer.fromColors(
-              child: Container(
-                height: 200,
-                width: 97 * SizeConfig.imageSizeMultiplier,
-                decoration: BoxDecoration(
-                    color: Colors.grey[350],
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-              ),
-              baseColor: Colors.grey[350]!,
-              highlightColor: Colors.white,
-              period: Duration(seconds: 3),
-            )
-          : Carousel(
+      child: store.state.isLoadingState == false
+          ? Carousel(
               boxFit: BoxFit.cover,
               images: store.state.mainSliderState['headerSlider']
                   .map<Widget>(
@@ -65,6 +53,18 @@ class _ImageSliderState extends State<ImageSlider> {
               autoplay: true,
               autoplayDuration: Duration(seconds: 3),
               animationCurve: Curves.easeInOut,
+            )
+          : Shimmer.fromColors(
+              child: Container(
+                height: 200,
+                width: 97 * SizeConfig.imageSizeMultiplier,
+                decoration: BoxDecoration(
+                    color: Colors.grey[350],
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+              ),
+              baseColor: Colors.grey[350]!,
+              highlightColor: Colors.white,
+              period: Duration(seconds: 3),
             ),
     );
   }

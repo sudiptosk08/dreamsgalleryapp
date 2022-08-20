@@ -12,26 +12,37 @@ class LogInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await Navigator.pushReplacement(context, MaterialPageRoute(builder:  (BuildContext context) =>HomeScreen()));
+        return await Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
       },
       child: Scaffold(
-        backgroundColor:store.state.darkModeState == null || store.state.darkModeState == false ? Colors.white : Color(0xFF0F0E0E),
-        appBar:AppBar(
-          backgroundColor: store.state.darkModeState == null || store.state.darkModeState == false ? Colors.white : Color(0xFF0F0E0E),
+        backgroundColor: store.state.darkModeState == null ||
+                store.state.darkModeState == false
+            ? Colors.white
+            : Color(0xFF0F0E0E),
+        appBar: AppBar(
+          backgroundColor: store.state.darkModeState == null ||
+                  store.state.darkModeState == false
+              ? Colors.white
+              : Color(0xFF0F0E0E),
           elevation: 0.0,
           leading: Padding(
-            padding:  EdgeInsets.all(12.0),
+            padding: EdgeInsets.all(12.0),
             child: IconButton(
                 icon: Icon(
                   Icons.arrow_back_ios,
                   size: 6 * SizeConfig.imageSizeMultiplier,
-                  color:store.state.darkModeState == null || store.state.darkModeState == false ?
-                  Colors.black : Colors.grey[400],
+                  color: store.state.darkModeState == null ||
+                          store.state.darkModeState == false
+                      ? Colors.black
+                      : Colors.grey[400],
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder:(BuildContext context)=> HomeScreen())
-                  );
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => HomeScreen()));
+                  store.state.logoutUserData = null;
                 }),
           ),
           centerTitle: true,
@@ -54,8 +65,8 @@ class LogInScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                       child: Padding(
-                        padding:
-                        EdgeInsets.all(4.4 * SizeConfig.imageSizeMultiplier),
+                        padding: EdgeInsets.all(
+                            4.4 * SizeConfig.imageSizeMultiplier),
                         child: SvgPicture.asset("assets/icons/DG SVG.svg"),
                       ),
                     ),
