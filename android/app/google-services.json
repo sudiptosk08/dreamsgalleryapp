@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "528101700566",
+    "project_id": "dreamsgallery-bdf57",
+    "storage_bucket": "dreamsgallery-bdf57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528101700566:android:fd39abafdd99b58d982a77",
+        "android_client_info": {
+          "package_name": "com.dreams_gallary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528101700566-umu2qto69ao1qop1s8btfd8bun1t9v89.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dreams_gallary",
+            "certificate_hash": "fcac302a2d9e0b8b8da18f52fc7ce64b1211b99d"
+          }
+        },
+        {
+          "client_id": "528101700566-s1m3sclvmt3egun5lkj74g5fib19qe3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXA3wlRoWMelGzMGypy9lOHFjomcRQF3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528101700566-s1m3sclvmt3egun5lkj74g5fib19qe3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -932,7 +932,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                                 ],
                               ),
                             ),
-                            (store.state.getVariableProductState != null && store.state.userDataState == null)
+                            (store.state.getVariableProductState != null && store.state.userDataState != null)
                                 ? InkWell(
                                     onTap: () {
                                       setState(() {

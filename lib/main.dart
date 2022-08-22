@@ -1,13 +1,14 @@
 // @dart=2.9
-import 'src/my_app.dart';
 import 'package:dream_gallary/myhomepage.dart';
 import 'package:dream_gallary/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dream_gallary/redux/reducer.dart';
 import 'package:dream_gallary/redux/state.dart';
 import 'package:redux/redux.dart';
+
 
 final store = Store<AppState>(reducer,
     initialState: AppState(
@@ -85,9 +86,12 @@ final store = Store<AppState>(reducer,
       userProfilePic: [],
       floatingActionButton: null,
     ));
+ 
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+ 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -122,10 +126,12 @@ class MyApp extends StatelessWidget {
             // Disable pull-up to load more functionality when Viewport is less than one screen
             enableBallisticLoad: true,
             // trigger load more by BallisticScrollActivity
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-              home: MyHomePage(),
+            child: OverlaySupport(
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                home: MyHomePage(),
+              ),
             ));
       });
     });

@@ -31,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   getCredentials() async {
-     SharedPreferences localStorage = await SharedPreferences.getInstance();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
     setState(() {
       store.state.userDataState =
           json.decode(localStorage.getString('userData')!);
@@ -564,14 +564,9 @@ class _CartScreenState extends State<CartScreen> {
                                           height: 1.3 *
                                               SizeConfig.imageSizeMultiplier),
                                       Container(
-                                        height: 25,
+                                        height: 25.5,
                                         width: 95,
-                                        color:
-                                            store.state.darkModeState == null ||
-                                                    store.state.darkModeState ==
-                                                        false
-                                                ? Colors.grey[800]
-                                                : Colors.grey[400],
+                                        color: Colors.white,
                                         child: Container(
                                           child: Row(
                                             mainAxisAlignment:
@@ -592,26 +587,28 @@ class _CartScreenState extends State<CartScreen> {
                                                   }
                                                 },
                                                 child: Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          width: 0.5,
+                                                          color: Colors.grey)),
                                                   width: 26,
                                                   alignment: Alignment.center,
                                                   child: Icon(
                                                     FontAwesomeIcons.minus,
                                                     size: 9,
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.white
-                                                        : Colors.black,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
                                               Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      width: 0.5,
+                                                      color: Colors.grey),
+                                                  color: Colors.white,
+                                                ),
                                                 alignment: Alignment.center,
-                                                width: 38,
-                                                color: Colors.grey[200],
+                                                width: 37,
                                                 child: Text(
                                                   store
                                                       .state
@@ -644,19 +641,17 @@ class _CartScreenState extends State<CartScreen> {
                                                   });
                                                 },
                                                 child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 0.5,
+                                                        color: Colors.grey),
+                                                  ),
                                                   alignment: Alignment.center,
                                                   width: 26,
                                                   child: Icon(
                                                     FontAwesomeIcons.plus,
                                                     size: 9,
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.white
-                                                        : Colors.black,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
@@ -1911,7 +1906,7 @@ class _CartScreenState extends State<CartScreen> {
                   ]),
                 ),
               )
-            :store.state.isLoadingState == true ?CircularProgressIndicator(): Container(
+            : Container(
                 alignment: Alignment.center,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

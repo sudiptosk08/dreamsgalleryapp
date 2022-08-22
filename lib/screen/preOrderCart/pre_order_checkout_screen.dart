@@ -1595,7 +1595,6 @@ class _PreOrderCheckOutScreenState extends State<PreOrderCheckOutScreen> {
     print('body - $body');
     print('res.statusCode  - ${res.statusCode}');
     if (res.statusCode == 200 && body['success'] == true) {
-      _showMsg(body['message'], 2);
       setState(() {
         store.state.userDataState['customer']['address'] = fullAddress;
         store.state.userDataState['customer']['postCode'] = postalCode;
@@ -1613,21 +1612,24 @@ class _PreOrderCheckOutScreenState extends State<PreOrderCheckOutScreen> {
             json.decode(localStorage.getString('userData')!);
         store.dispatch(UserDataAction(store.state.userDataState));
       });
-      store.state.subTotalState = null;
       SharedPreferences getVariableProductStorage =
           await SharedPreferences.getInstance();
       getVariableProductStorage.remove('variableProductData');
       store.state.cartProductState = [];
       store.state.cartDataState = [];
       store.state.getVariableProductState = null;
+      print("Get If condtion successfull");
       if (data['paymentType'] == 'sslcommerz') {
         var tranId = "PX${body['order']['id'].toString()}";
-        var grandTotal = double.parse(data['grandTotal']) +
-            double.parse(data['shippingPrice'].toString());
 
+        //var grandTotal = double.parse(data['grandTotal']);
+       // print('grandTotal $grandTotal');
+        print('trandId $tranId');
+
+        print("EasySSLCommerz Pay Nows");
         var result = await EasySSLCommerz(
           tranId: tranId,
-          amount: grandTotal.toDouble(),
+          amount: 2.00, //grandTotal.toDouble(),
           customerAddress1: fullAddress,
           customerCity: city,
           customerCountry: "Bangladesh",
@@ -1655,6 +1657,9 @@ class _PreOrderCheckOutScreenState extends State<PreOrderCheckOutScreen> {
                   builder: (BuildContext context) => PaymentSuccessfull()),
               ModalRoute.withName('/'),
             );
+            print(model.aPIConnect);
+            print(model.baseFair);
+            print(model.validatedOn);
           } else {
             Navigator.pushAndRemoveUntil<void>(
               context,

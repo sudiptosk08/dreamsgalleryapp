@@ -2683,7 +2683,7 @@ class _CheckOutState extends State<CheckOut> {
       store.state.getVariableProductState = null;
       store.state.promoCodeState = null;
       store.state.referralCodeState = null;
-      store.state.giftVoucherState = null;
+      store.state.giftVoucherState = null; 
       if (data['paymentType'] == 'sslcommerz') {
         var tranId = "PX${body['order']['id'].toString()}";
         var grandTotal = double.parse(data['grandTotal']) +

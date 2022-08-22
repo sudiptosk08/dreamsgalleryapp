@@ -92,26 +92,18 @@ class _PreOrderCartScreenState extends State<PreOrderCartScreen> {
       print("hello");
     }
   }
-
   Future<void> _getPreOrderCart() async {
     //var data = store.state.cartDataState;
-    var resAllCart = await CallApi().getData('/app/pre-order-cart');
-    print(resAllCart);
-    if (resAllCart.statusCode == 200) {
-      var body = json.decode(resAllCart.body);
-      print('body -=-=-=-=--=-=-=-=-= $body');
-      setState(() {
-        store.dispatch(PreOrderCartAction(body['allCarts']));
-        for (int i = 0; i < store.state.preOrderCartState.length; i++) {
-          var totalPrice = (store.state.preOrderCartState[i]['details']
-                  ['sellingPrice'] *
-              store.state.preOrderCartState[i]['quantity']);
-          sum = (sum + totalPrice).toInt();
-        }
-      });
-    } else {
-      print("hello");
-    }
+
+    setState(() {
+      for (int i = 0; i < store.state.preOrderCartState.length; i++) {
+        var totalPrice = (store.state.preOrderCartState[i]['details']
+                ['sellingPrice'] *
+            store.state.preOrderCartState[i]['quantity']);
+        sum = (sum + totalPrice).toInt();
+      }
+    });
+
     setState(() {
       store.dispatch(IsLoadingAction(false)); //false chilo
     });
@@ -430,14 +422,9 @@ class _PreOrderCartScreenState extends State<PreOrderCartScreen> {
                                           height: 1.3 *
                                               SizeConfig.imageSizeMultiplier),
                                       Container(
-                                        height: 25,
+                                        height: 25.5,
                                         width: 95,
-                                        color:
-                                            store.state.darkModeState == null ||
-                                                    store.state.darkModeState ==
-                                                        false
-                                                ? Colors.grey[800]
-                                                : Colors.grey[400],
+                                        color: Colors.white,
                                         child: Container(
                                           child: Row(
                                             mainAxisAlignment:
@@ -460,25 +447,25 @@ class _PreOrderCartScreenState extends State<PreOrderCartScreen> {
                                                 },
                                                 child: Container(
                                                   width: 26,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.grey,
+                                                          width: 0.5)),
                                                   alignment: Alignment.center,
                                                   child: Icon(
                                                     FontAwesomeIcons.minus,
                                                     size: 9,
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.white
-                                                        : Colors.black,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
                                               Container(
                                                 alignment: Alignment.center,
-                                                width: 38,
-                                                color: Colors.grey[200],
+                                                width: 37,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: Colors.grey,
+                                                        width: 0.5)),
                                                 child: Text(
                                                   store
                                                       .state
@@ -513,18 +500,15 @@ class _PreOrderCartScreenState extends State<PreOrderCartScreen> {
                                                 },
                                                 child: Container(
                                                   alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: Colors.grey,
+                                                          width: 0.5)),
                                                   width: 26,
                                                   child: Icon(
                                                     FontAwesomeIcons.plus,
                                                     size: 9,
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.white
-                                                        : Colors.black,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),

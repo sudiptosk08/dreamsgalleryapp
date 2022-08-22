@@ -72,19 +72,6 @@ class _CheckBalanceState extends State<CheckBalance> {
             }),
       ),
       body: Column(children: [
-        SizedBox(
-          height: 5 * SizeConfig.imageSizeMultiplier,
-        ),
-        Divider(
-          indent: 3.1 * SizeConfig.imageSizeMultiplier,
-          endIndent: 3.1 * SizeConfig.imageSizeMultiplier,
-          color: store.state.darkModeState == false ||
-                  store.state.darkModeState == null
-              ? Colors.grey[300]
-              : Colors.grey[900],
-          height: 1.0 * SizeConfig.imageSizeMultiplier,
-          thickness: 10,
-        ),
         Container(
           height: 70 * SizeConfig.heightMultiplier,
           width: double.infinity,
@@ -101,18 +88,6 @@ class _CheckBalanceState extends State<CheckBalance> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.all(2.5 * SizeConfig.imageSizeMultiplier),
-                child: Text(
-                  "My Account",
-                  style: KTextStyle.subtitle2.copyWith(
-                    color: store.state.darkModeState == false ||
-                            store.state.darkModeState == null
-                        ? Colors.black
-                        : Colors.white,
-                  ),
-                ),
-              ),
               SizedBox(
                 height: 2 * SizeConfig.imageSizeMultiplier,
               ),
@@ -319,16 +294,6 @@ class _CheckBalanceState extends State<CheckBalance> {
               )
             ],
           ),
-        ),
-        Divider(
-          indent: 0.1 * SizeConfig.imageSizeMultiplier,
-          endIndent: 0.1 * SizeConfig.imageSizeMultiplier,
-          color: store.state.darkModeState == false ||
-                  store.state.darkModeState == null
-              ? Colors.grey[350]
-              : Colors.grey[900],
-          height: 3 * SizeConfig.imageSizeMultiplier,
-          thickness: 11,
         ),
       ]),
     );
