@@ -27,7 +27,8 @@ class _HomePageState extends State<HomePage> {
   var user;
 
   void initState() {
-    _getAllLandingApiData();
+    _mainSliderApiData();
+    _promotionSliderApiData();
     _getAllGroupApiData();
     _getAllBrandApiData();
     _getAllFeatureApiData();
@@ -54,13 +55,27 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  Future<void> _getAllLandingApiData() async {
+  Future<void> _mainSliderApiData() async {
     var resAllSliders = await CallApi().withoutTokengetData('/app/allSliders');
     if (resAllSliders.statusCode == 200) {
       var body = json.decode(resAllSliders.body);
 
       setState(() {
-        store.dispatch(MainSliderAction(body));
+        store.dispatch(MainSliderAction(body['headerSlider']));
+      });
+      setState(() {
+        store.dispatch(IsLoadingAction(false)); //true chilo
+      });
+    }
+  }
+
+  Future<void> _promotionSliderApiData() async {
+    var resAllSliders = await CallApi().withoutTokengetData('/app/allSliders');
+    if (resAllSliders.statusCode == 200) {
+      var body = json.decode(resAllSliders.body);
+
+      setState(() {
+        store.dispatch(PromotionalCardAction(body['promotionalCards']));
       });
       setState(() {
         store.dispatch(IsLoadingAction(false)); //true chilo

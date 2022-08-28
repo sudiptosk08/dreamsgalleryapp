@@ -1590,7 +1590,7 @@ class _PreOrderCheckOutScreenState extends State<PreOrderCheckOutScreen> {
       'date': "${DateTime.now()}",
     };
     print("-------$data--------");
-    var res = await CallApi().postData(data, '/app/pre-order/order');
+    var res = await CallApi().postData(data, '/app/pre-order/AppOrder');
     var body = json.decode(res.body);
     print('body - $body');
     print('res.statusCode  - ${res.statusCode}');
@@ -1621,15 +1621,16 @@ class _PreOrderCheckOutScreenState extends State<PreOrderCheckOutScreen> {
       print("Get If condtion successfull");
       if (data['paymentType'] == 'sslcommerz') {
         var tranId = "PX${body['order']['id'].toString()}";
+        var grandTotal = double.parse(widget.sum.toString()) +
+            double.parse(data['shippingPrice'].toString());
 
-        //var grandTotal = double.parse(data['grandTotal']);
-       // print('grandTotal $grandTotal');
+        print('grandTotal $grandTotal');
         print('trandId $tranId');
 
-        print("EasySSLCommerz Pay Nows");
         var result = await EasySSLCommerz(
+          customerName: fullName,
           tranId: tranId,
-          amount: 2.00, //grandTotal.toDouble(),
+          amount:grandTotal.toDouble(),
           customerAddress1: fullAddress,
           customerCity: city,
           customerCountry: "Bangladesh",

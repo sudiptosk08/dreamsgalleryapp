@@ -1,7 +1,5 @@
-
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
-import 'dart:math';
 import 'package:sslcommerz_flutter/model/SSLCCustomerInfoInitializer.dart';
 import 'package:sslcommerz_flutter/model/SSLCommerzInitialization.dart';
 import 'package:sslcommerz_flutter/model/SSLCurrencyType.dart';
@@ -10,6 +8,7 @@ import 'config.dart';
 
 class EasySSLCommerz {
   double amount;
+  String? customerName;
   String? customerEmail;
   String? customerPhone;
   String? customerCountry;
@@ -24,16 +23,17 @@ class EasySSLCommerz {
   var ssl_store_password_live = '5EA6BBABE216A23577';
   var ssl_store_password_sandbox = 'dream5ecf34aa69953@ssl';
 
-  EasySSLCommerz(
-      {required this.amount,
-      this.customerEmail,
-      this.customerPhone,
-      this.customerCountry,
-      this.customerPostCode,
-      this.customerAddress1,
-      this.customerCity,
-      this.tranId,
-      }) {
+  EasySSLCommerz({
+    required this.amount,
+    this.customerName,
+    this.customerEmail,
+    this.customerPhone,
+    this.customerCountry,
+    this.customerPostCode,
+    this.customerAddress1,
+    this.customerCity,
+    this.tranId,
+  }) {
     config();
   }
   void config() {
@@ -48,7 +48,7 @@ class EasySSLCommerz {
             tran_id: tranId));
 
     _sslcommerz!.customerInfoInitializer = SSLCCustomerInfoInitializer(
-        customerName: null,
+        customerName: customerName,
         customerEmail: customerEmail,
         customerAddress1: customerAddress1,
         customerCity: customerCity,
@@ -61,10 +61,4 @@ class EasySSLCommerz {
     return await _sslcommerz!.payNow();
   }
 
-  String getRandomString(int length) {
-    Random _rnd = Random();
-    String _chars = '0123456789';
-    return String.fromCharCodes(Iterable.generate(
-        length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-  }
 }

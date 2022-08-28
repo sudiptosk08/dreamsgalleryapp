@@ -11,6 +11,7 @@ class ImageSlider extends StatefulWidget {
 }
 
 class _ImageSliderState extends State<ImageSlider> {
+  var index;
   @override
   void initState() {
     setState(() {
@@ -33,7 +34,7 @@ class _ImageSliderState extends State<ImageSlider> {
       child: store.state.isLoadingState == false
           ? Carousel(
               boxFit: BoxFit.cover,
-              images: store.state.mainSliderState['headerSlider']
+              images: store.state.mainSliderState
                   .map<Widget>(
                     (element) => ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(10)),

@@ -45,7 +45,7 @@ class _BodyState extends State<Body> {
           EdgeInsets.symmetric(vertical: 3 * SizeConfig.imageSizeMultiplier),
       child: Column(
         children: [
-          SizedBox(height: 14 * SizeConfig.imageSizeMultiplier),
+          SizedBox(height: 11 * SizeConfig.imageSizeMultiplier),
           Column(
             children: [
               fileImage != null

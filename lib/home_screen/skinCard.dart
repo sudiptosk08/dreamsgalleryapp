@@ -8,7 +8,6 @@ class SkinCard extends StatefulWidget {
 }
 
 class _SkinCardState extends State<SkinCard> {
-  var index = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,8 +26,8 @@ class _SkinCardState extends State<SkinCard> {
             )
           : BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(store.state
-                      .mainSliderState['promotionalCards'][1]['image']), //
+                  image: NetworkImage(
+                      store.state.promotionalCardState[0]['image']), //
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(15),
             ),

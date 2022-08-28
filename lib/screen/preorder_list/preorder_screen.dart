@@ -244,7 +244,7 @@ class _PreOrderState extends State<PreOrder> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12)),
                                 ),
-                                child: MyOrderCard(
+                                child: OrderCard(
                                   orderId: store.state.preOrderDataState[index]
                                       ['id'],
                                   name: store.state.preOrderDataState[index]
@@ -263,6 +263,7 @@ class _PreOrderState extends State<PreOrder> {
                                           ['shippingPrice'],
                                   status: store.state.preOrderDataState[index]
                                       ['status'],
+                                  orderType:"PreOrder",
                                   index: index,
                                 )));
                         // here by default width and height is 0
@@ -342,7 +343,7 @@ class _PreOrderState extends State<PreOrder> {
                                 ),
                                 child: (store.state.statusState.isEmpty)
                                     ? Container()
-                                    : MyOrderCard(
+                                    : OrderCard(
                                         index: index,
                                         orderId: store.state.statusState[index]
                                             ['id'],
@@ -359,7 +360,9 @@ class _PreOrderState extends State<PreOrder> {
                                         amount: store.state.statusState[index]
                                             ['grandTotal'],
                                         status: store.state.statusState[index]
-                                            ['status'])));
+                                            ['status'],
+                                        orderType: "PreOrder",
+                                            )));
                         // here by default width and height is 0
                       },
                     ),

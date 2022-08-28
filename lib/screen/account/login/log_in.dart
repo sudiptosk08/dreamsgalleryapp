@@ -1,3 +1,4 @@
+import 'package:dream_gallary/component/pushnotificatio.dart';
 import 'package:dream_gallary/home_screen/home_screen.dart';
 import 'package:dream_gallary/redux/action.dart';
 import 'package:dream_gallary/screen/account/registration/regist_screen.dart';
@@ -245,17 +246,20 @@ class _LoginFormState extends State<LoginForm> {
     if (passwordController.text.isEmpty) {
       return _showMsg('Password can\'t be empty!', 1);
     }
+    String fcmtoken = FCM.fcmtoken;
+    print("FCMTOKEN $fcmtoken");
 
     var data = {
       'contact': phoneController.text,
       'password': passwordController.text,
+      'deviceToken': fcmtoken,
     };
 
     setState(() {
       _isLoading = true;
     });
 
-    var res = await CallApi().withoutTokenPostData(data, '/app/login');
+    var res = await CallApi().withoutTokenPostData(data, '/app/appLogin');
     var body = json.decode(res.body);
     print("body - $body");
     if (res.statusCode == 200 && body['success'] == true) {
@@ -301,10 +305,8 @@ class _LoginFormState extends State<LoginForm> {
     }
     setState(() {
       _isLoading = false;
-
     });
   }
-  
 
   _showMsg(msg, numb) {
     return Fluttertoast.showToast(

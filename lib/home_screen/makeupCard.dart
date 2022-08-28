@@ -9,7 +9,6 @@ class MakeupCard extends StatefulWidget {
 }
 
 class _MakeupCardState extends State<MakeupCard> {
-  var index = 1;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,8 +28,8 @@ class _MakeupCardState extends State<MakeupCard> {
             )
           : BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(store
-                    .state.mainSliderState['promotionalCards'][0]['image']), //
+                image: NetworkImage(
+                    store.state.promotionalCardState[1]['image']), //
                 //:
                 fit: BoxFit.cover,
               ),

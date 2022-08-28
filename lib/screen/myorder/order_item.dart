@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:dream_gallary/api/api.dart';
+import 'package:dream_gallary/screen/cart/action_button.dart';
 import 'package:dream_gallary/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,7 +11,7 @@ import '../../constant.dart';
 import '../../k_text_style.dart';
 import '../../main.dart';
 
-class MyOrderCard extends StatefulWidget {
+class OrderCard extends StatefulWidget {
   final index;
   final orderId;
   final name;
@@ -21,25 +21,27 @@ class MyOrderCard extends StatefulWidget {
   final payment;
   final amount;
   final status;
+  final orderType;
 
-  MyOrderCard({
-    Key? key,
-    @required this.index,
-    @required this.orderId,
-    @required this.name,
-    @required this.phone,
-    @required this.date,
-    @required this.payment,
-    @required this.amount,
-    @required this.paymentMethod,
-    @required this.status,
-  }) : super(key: key);
+  OrderCard(
+      {Key? key,
+      @required this.index,
+      @required this.orderId,
+      @required this.name,
+      @required this.phone,
+      @required this.date,
+      @required this.payment,
+      @required this.amount,
+      @required this.paymentMethod,
+      @required this.status,
+      @required this.orderType})
+      : super(key: key);
   @override
-  _MyOrderCardState createState() => _MyOrderCardState(index, orderId, name,
-      phone, date, payment, amount, paymentMethod, status);
+  _OrderCardState createState() => _OrderCardState(index, orderId, name, phone,
+      date, payment, amount, paymentMethod, status, orderType);
 }
 
-class _MyOrderCardState extends State<MyOrderCard> {
+class _OrderCardState extends State<OrderCard> {
   var orderId;
   var index;
   var name;
@@ -49,18 +51,19 @@ class _MyOrderCardState extends State<MyOrderCard> {
   var payment;
   var amount;
   var status;
+  var orderTYpe;
 
-  _MyOrderCardState(
-    this.index,
-    this.orderId,
-    this.name,
-    this.phone,
-    this.date,
-    this.payment,
-    this.amount,
-    this.paymentMethod,
-    this.status,
-  );
+  _OrderCardState(
+      this.index,
+      this.orderId,
+      this.name,
+      this.phone,
+      this.date,
+      this.payment,
+      this.amount,
+      this.paymentMethod,
+      this.status,
+      this.orderTYpe);
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +210,7 @@ class _MyOrderCardState extends State<MyOrderCard> {
                   onPressed: () {
                     setState(() {
                       status == "Order Placed"
-                          ? deleteHandeler(index)
+                          ? permissiondelete(context)
                           : _showMsg("This order is already $status!", 1);
                     });
                   }),
@@ -338,7 +341,99 @@ class _MyOrderCardState extends State<MyOrderCard> {
     );
   }
 
-  Future<void> deleteHandeler(index) async {
+  permissiondelete(BuildContext context) => showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: EdgeInsets.all(7),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    "Cancel Order ",
+                    style: KTextStyle.headline4,
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    "Do you want to cancel this order?",
+                    style: KTextStyle.bodyText4.copyWith(color: Colors.grey),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 15.0, right: 7, bottom: 15, left: 7),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                "Cancel",
+                                style: KTextStyle.bodyText4,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              orderTYpe == "MyOrder"
+                                  ? myOrderdeleteHandeler(index)
+                                  : preOrderdeleteHandeler(index);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                "Delete",
+                                style: KTextStyle.bodyText4
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ]),
+          ),
+        );
+      });
+
+  Future<void> myOrderdeleteHandeler(index) async {
     var data = {
       'billingAddress': store.state.myOrderState[index]['billingAddress'],
       'billingCity': store.state.myOrderState[index]['billingCity'],
@@ -434,6 +529,120 @@ class _MyOrderCardState extends State<MyOrderCard> {
       'subTotal': store.state.myOrderState[index]['subTotal'],
       'updated_at': store.state.myOrderState[index]['updated_at'],
       'userId': store.state.myOrderState[index]['userId'],
+    };
+    var res = await CallApi().postData(data, '/app/cancelOrder');
+    var body = json.decode(res.body);
+    print('cancle body - $body');
+    print('res.statusCode  - ${res.statusCode}');
+    if (res.statusCode == 200 && body['success'] == true) {
+      _showMsg("Canceled Order!", 2);
+      setState(() {
+        status = "Canceled";
+      });
+    } else {
+      _showMsg("This order already complete! ", 1);
+    }
+  }
+
+  Future<void> preOrderdeleteHandeler(index) async {
+    var data = {
+      'billingAddress': store.state.preOrderDataState[index]['billingAddress'],
+      'billingCity': store.state.preOrderDataState[index]['billingCity'],
+      'bkashJson': store.state.preOrderDataState[index]['bkashJson'],
+      'contact': store.state.preOrderDataState[index]['contact'],
+      'coupon': store.state.preOrderDataState[index]['coupon'],
+      'created_at': store.state.preOrderDataState[index]['created_at'],
+      'dgAmount': store.state.preOrderDataState[index]['dgAmount'],
+      'discount': store.state.preOrderDataState[index]['discount'],
+      'discountType': store.state.preOrderDataState[index]['discountType'],
+      'email': store.state.preOrderDataState[index]['email'],
+      'giftVoucherAmount': store.state.preOrderDataState[index]
+          ['giftVoucherAmount'],
+      'giftVoucherCode': store.state.preOrderDataState[index]
+          ['giftVoucherCode'],
+      'grandTotal': store.state.preOrderDataState[index]['grandTotal'],
+      'id': store.state.preOrderDataState[index]['id'],
+      'invoice_id': store.state.preOrderDataState[index]['invoice_id'],
+      'isDGMoney': store.state.preOrderDataState[index]['isDGMoney'],
+      'name': store.state.preOrderDataState[index]['name'],
+      'orderdetails': [
+        {
+          'created_at': store.state.preOrderDataState[index]['orderdetails'][0]
+              ['created_at'],
+          'id': store.state.preOrderDataState[index]['orderdetails'][0]['id'],
+          'orderId': store.state.preOrderDataState[index]['orderdetails'][0]
+              ['orderId'],
+          'price': store.state.preOrderDataState[index]['orderdetails'][0]
+              ['price'],
+          'product': {
+            'admin_id': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['admin_id'],
+            'averageBuyingPrice': store.state.preOrderDataState[index]
+                ['orderdetails'][0]['product']['averageBuyingPrice'],
+            'barCode': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['barCode'],
+            'brand': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['brand'],
+            'brandId': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['brandId'],
+            'catName': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['catName'],
+            'categoryId': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['categoryId'],
+            'color': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['color'],
+            'created_at': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['created_at'],
+            'date': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['date'],
+            'groupId': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['groupId'],
+            'groupName': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['groupName'],
+            'id': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['id'],
+            'model': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['model'],
+            'mproductId': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['mproductId'],
+            'openingQuantity': store.state.preOrderDataState[index]
+                ['orderdetails'][0]['product']['openingQuantity'],
+            'openingUnitPrice': store.state.preOrderDataState[index]
+                ['orderdetails'][0]['product']['openingUnitPrice'],
+            'productImage': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['productImage'],
+            'productName': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['productName'],
+            'sellingPrice': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['sellingPrice'],
+            'size': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['size'],
+            'stock': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['stock'],
+            'unit': store.state.preOrderDataState[index]['orderdetails'][0]
+                ['product']['unit'],
+            'updated_at': store.state.preOrderDataState[index]['orderdetails']
+                [0]['product']['updated_at'],
+          },
+          'productId': store.state.preOrderDataState[index]['orderdetails'][0]
+              ['productId'],
+          'quantity': store.state.preOrderDataState[index]['orderdetails'][0]
+              ['quantity'],
+          'updated_at': store.state.preOrderDataState[index]['orderdetails'][0]
+              ['updated_at'],
+        },
+      ],
+      'paymentStatus': store.state.preOrderDataState[index]['paymentStatus'],
+      'paymentType': store.state.preOrderDataState[index]['paymentType'],
+      'postCode': store.state.preOrderDataState[index]['postCode'],
+      'referralCode': store.state.preOrderDataState[index]['referralCode'],
+      'roundAmount': store.state.preOrderDataState[index]['roundAmount'],
+      'sessionkey': store.state.preOrderDataState[index]['sessionkey'],
+      'shippingPrice': store.state.preOrderDataState[index]['shippingPrice'],
+      'status': store.state.preOrderDataState[index]['status'],
+      'subTotal': store.state.preOrderDataState[index]['subTotal'],
+      'updated_at': store.state.preOrderDataState[index]['updated_at'],
+      'userId': store.state.preOrderDataState[index]['userId'],
     };
     var res = await CallApi().postData(data, '/app/cancelOrder');
     var body = json.decode(res.body);

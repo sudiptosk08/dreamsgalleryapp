@@ -2690,6 +2690,7 @@ class _CheckOutState extends State<CheckOut> {
             double.parse(data['shippingPrice'].toString());
 
         var result = await EasySSLCommerz(
+          customerName: nameString,
           tranId: tranId,
           amount: grandTotal.toDouble(),
           customerAddress1: fullAddress,

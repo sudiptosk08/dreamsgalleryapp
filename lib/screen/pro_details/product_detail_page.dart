@@ -111,7 +111,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     if (res.statusCode == 200 && body['success'] == true) {
       setState(() {
         var details = body['finalProduct'];
-        print(details);
         details['img'] = widget.img;
         details['quantity'] = qty;
         listQty = details['quantity'];

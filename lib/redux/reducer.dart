@@ -21,9 +21,9 @@ AppState reducer(AppState state, dynamic action) {
   else if (action is FeatureProductAction) {
     return state.copywith(featureProductState: action.featureProductAction);
   }
-  // else if(action is PromotionalCardAction){
-  //   return state.copywith(promotionalCardState: action.promotionalCardAction);
-  // }
+  else if(action is PromotionalCardAction){
+    return state.copywith(promotionalCardState: action.promotionalCardAction);
+  }
   else if(action is LatestProductAction){
     return state.copywith(latestProductState: action.latestProductAction);
   }
@@ -262,8 +262,6 @@ AppState reducer(AppState state, dynamic action) {
     else if(action is FloatingButtonAction){
     return state.copywith(floatingActionButton: action.floatingButtonAction);
   }
-
-
 
   return state;
 }

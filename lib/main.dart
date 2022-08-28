@@ -1,14 +1,13 @@
 // @dart=2.9
 import 'package:dream_gallary/myhomepage.dart';
 import 'package:dream_gallary/size_config.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dream_gallary/redux/reducer.dart';
 import 'package:dream_gallary/redux/state.dart';
 import 'package:redux/redux.dart';
-
 
 final store = Store<AppState>(reducer,
     initialState: AppState(
@@ -17,7 +16,7 @@ final store = Store<AppState>(reducer,
       groupProductState: [],
       brandProductState: [],
       featureProductState: [],
-      //promotionalCardState: [],
+      promotionalCardState: [],
       latestProductState: [],
       discountState: [],
       shopPageState: [],
@@ -85,13 +84,12 @@ final store = Store<AppState>(reducer,
       promoCodeState: null,
       userProfilePic: [],
       floatingActionButton: null,
+      
     ));
- 
 
-
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
- 
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -126,13 +124,13 @@ class MyApp extends StatelessWidget {
             // Disable pull-up to load more functionality when Viewport is less than one screen
             enableBallisticLoad: true,
             // trigger load more by BallisticScrollActivity
-            child: OverlaySupport(
+           
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',
                 home: MyHomePage(),
               ),
-            ));
+            );
       });
     });
   }

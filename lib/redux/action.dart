@@ -7,110 +7,132 @@ class MainSliderAction {
   dynamic mainSliderAction;
   MainSliderAction(this.mainSliderAction);
 }
+
 class GroupProductAction {
   dynamic groupProductAction;
   GroupProductAction(this.groupProductAction);
 }
-class BrandProductAction{
+
+class BrandProductAction {
   dynamic brandProductAction;
   BrandProductAction(this.brandProductAction);
 }
-class FeatureProductAction{
+
+class FeatureProductAction {
   dynamic featureProductAction;
   FeatureProductAction(this.featureProductAction);
 }
-// class PromotionalCardAction{
-//   dynamic promotionalCardAction;
-//   PromotionalCardAction(this.promotionalCardAction);
-// }
-class LatestProductAction{
+
+class PromotionalCardAction {
+  dynamic promotionalCardAction;
+  PromotionalCardAction(this.promotionalCardAction);
+}
+
+class LatestProductAction {
   dynamic latestProductAction;
   LatestProductAction(this.latestProductAction);
 }
-class DiscountAction{
+
+class DiscountAction {
   dynamic discountAction;
   DiscountAction(this.discountAction);
 }
-class ShopPageAction{
+
+class ShopPageAction {
   dynamic shopPageAction;
   ShopPageAction(this.shopPageAction);
 }
-class BrandAction{
+
+class BrandAction {
   dynamic brandAction;
   BrandAction(this.brandAction);
 }
-class ColorAction{
+
+class ColorAction {
   dynamic colorAction;
   ColorAction(this.colorAction);
 }
-class CategoryAction{
+
+class CategoryAction {
   dynamic categoryAction;
   CategoryAction(this.categoryAction);
 }
-class SubCategoryAction{
+
+class SubCategoryAction {
   dynamic subcategoryAction;
   SubCategoryAction(this.subcategoryAction);
 }
-class TagAction{
+
+class TagAction {
   dynamic tagAction;
   TagAction(this.tagAction);
 }
+
 //class FilterShopAction{
 //   dynamic filterShopAction;
 //   FilterShopAction(this.filterShopAction);
 // }
-class FilterBrandAction{
+class FilterBrandAction {
   dynamic filterBrandAction;
   FilterBrandAction(this.filterBrandAction);
 }
-class FilterColorAction{
+
+class FilterColorAction {
   dynamic filterColorAction;
   FilterColorAction(this.filterColorAction);
 }
-class FilterCategoryAction{
+
+class FilterCategoryAction {
   dynamic filterCategoryAction;
   FilterCategoryAction(this.filterCategoryAction);
 }
-class FilterSubcategoryAction{
+
+class FilterSubcategoryAction {
   dynamic filterSubcategoryAction;
   FilterSubcategoryAction(this.filterSubcategoryAction);
 }
-class FilterMaxPriceAction{
+
+class FilterMaxPriceAction {
   dynamic filterMaxPriceAction;
   FilterMaxPriceAction(this.filterMaxPriceAction);
 }
-class FilterMinPriceAction{
+
+class FilterMinPriceAction {
   dynamic filterMinPriceAction;
   FilterMinPriceAction(this.filterMinPriceAction);
 }
-class FilterTagAction{
+
+class FilterTagAction {
   dynamic filterTagAction;
   FilterTagAction(this.filterTagAction);
 }
-class HomeFilterBrandAction{
+
+class HomeFilterBrandAction {
   dynamic homeFilterBrandAction;
   HomeFilterBrandAction(this.homeFilterBrandAction);
 }
 
-class FilterBrandNameAction{
+class FilterBrandNameAction {
   dynamic filterBrandNameAction;
   FilterBrandNameAction(this.filterBrandNameAction);
 }
-class FilterCategoryNameAction{
+
+class FilterCategoryNameAction {
   dynamic filterCategoryNameAction;
   FilterCategoryNameAction(this.filterCategoryNameAction);
 }
-class FilterSubCategoryNameAction{
+
+class FilterSubCategoryNameAction {
   dynamic filterSubCategoryNameAction;
   FilterSubCategoryNameAction(this.filterSubCategoryNameAction);
 }
 
-
-class SingleProductColorAction{
+class SingleProductColorAction {
   dynamic singleProductColorAction;
   SingleProductColorAction(this.singleProductColorAction);
 }
-class SingleProductSizeAction{
+
+class SingleProductSizeAction {
   dynamic singleProductSizeAction;
   SingleProductSizeAction(this.singleProductSizeAction);
 }
@@ -120,218 +142,257 @@ class SingleProductRatingAction{
   SingleProductRatingAction(this.singleProductRatingAction);
 }
 
-class RelatedProductAction{
+class RelatedProductAction {
   dynamic relatedProductAction;
   RelatedProductAction(this.relatedProductAction);
 }
 
-class ProductReviewAction{
+class ProductReviewAction {
   dynamic productReviewAction;
   ProductReviewAction(this.productReviewAction);
 }
 
-class SingleProductIdAction{
+class SingleProductIdAction {
   dynamic singleProductIdAction;
   SingleProductIdAction(this.singleProductIdAction);
 }
-class SingleProductInformationAction{
+
+class SingleProductInformationAction {
   dynamic singleProductInformationAction;
   SingleProductInformationAction(this.singleProductInformationAction);
 }
 
-class GroupCategoryAction{
+class GroupCategoryAction {
   dynamic groupCategoryAction;
   GroupCategoryAction(this.groupCategoryAction);
 }
-class UserDataAction{
+
+class UserDataAction {
   dynamic userDataAction;
   UserDataAction(this.userDataAction);
 }
-class NewUserDataAction{
+
+class NewUserDataAction {
   dynamic newUserDataAction;
   NewUserDataAction(this.newUserDataAction);
 }
-class UserContactAction{
+
+class UserContactAction {
   dynamic userContactAction;
   UserContactAction(this.userContactAction);
 }
 
-class DistrictAction{
+class DistrictAction {
   dynamic districtAction;
   DistrictAction(this.districtAction);
 }
-class ZoneAction{
+
+class ZoneAction {
   dynamic zoneAction;
   ZoneAction(this.zoneAction);
 }
-class AreasAction{
+
+class AreasAction {
   dynamic areasAction;
   AreasAction(this.areasAction);
 }
-class DistrictNameAction{
+
+class DistrictNameAction {
   dynamic districtNameAction;
   DistrictNameAction(this.districtNameAction);
 }
-class ZoneNameAction{
+
+class ZoneNameAction {
   dynamic zoneNameAction;
   ZoneNameAction(this.zoneNameAction);
 }
-class AreaNameAction{
+
+class AreaNameAction {
   dynamic areaNameAction;
   AreaNameAction(this.areaNameAction);
 }
-class NotificationAction{
+
+class NotificationAction {
   dynamic notificationAction;
   NotificationAction(this.notificationAction);
 }
 
-class MyOrderAction{
+class MyOrderAction {
   dynamic myOrderAction;
   MyOrderAction(this.myOrderAction);
 }
 
-class PreOrderDataAction{
+class PreOrderDataAction {
   dynamic preOrderDataAction;
   PreOrderDataAction(this.preOrderDataAction);
 }
 
-class WishListAction{
+class WishListAction {
   dynamic wishListAction;
   WishListAction(this.wishListAction);
 }
 
-class WishListItemAction{
+class WishListItemAction {
   dynamic wishListItemAction;
   WishListItemAction(this.wishListItemAction);
 }
-class ReportAction{
+
+class ReportAction {
   dynamic reportAction;
   ReportAction(this.reportAction);
 }
-class HomeBrandAction{
+
+class HomeBrandAction {
   dynamic homeBrandAction;
   HomeBrandAction(this.homeBrandAction);
 }
-class CategoryIndexAction{
+
+class CategoryIndexAction {
   dynamic categoryIndexAction;
   CategoryIndexAction(this.categoryIndexAction);
 }
 
-class ResetPasswordContactAction{
+class ResetPasswordContactAction {
   dynamic resetPasswordContactAction;
   ResetPasswordContactAction(this.resetPasswordContactAction);
 }
-class ResetPasswordTokenAction{
+
+class ResetPasswordTokenAction {
   dynamic resetPasswordTokenAction;
   ResetPasswordTokenAction(this.resetPasswordTokenAction);
 }
 
-class PreOrderCartAction{
+class PreOrderCartAction {
   dynamic preOrderCartAction;
   PreOrderCartAction(this.preOrderCartAction);
 }
-class UserBalanceAction{
+
+class UserBalanceAction {
   dynamic userBalanceAction;
   UserBalanceAction(this.userBalanceAction);
 }
-class ReportImageAction{
+
+class ReportImageAction {
   dynamic reportImageAction;
   ReportImageAction(this.reportImageAction);
 }
-class GetVariableProductAction{
+
+class GetVariableProductAction {
   dynamic getVariableProductAction;
   GetVariableProductAction(this.getVariableProductAction);
 }
-class CartDataAction{
+
+class CartDataAction {
   dynamic cartDataAction;
   CartDataAction(this.cartDataAction);
 }
-class CartProductAction{
+
+class CartProductAction {
   dynamic cartProductAction;
   CartProductAction(this.cartProductAction);
 }
-class SubTotalAction{
+
+class SubTotalAction {
   dynamic subTotalAction;
   SubTotalAction(this.subTotalAction);
 }
-class GrandTotalAction{
+
+class GrandTotalAction {
   dynamic grandTotalAction;
   GrandTotalAction(this.grandTotalAction);
 }
-class PromoCodeAction{
+
+class PromoCodeAction {
   dynamic promoCodeAction;
   PromoCodeAction(this.promoCodeAction);
 }
-class ReferralCodeAction{
+
+class ReferralCodeAction {
   dynamic referralCodeAction;
   ReferralCodeAction(this.referralCodeAction);
 }
-class GiftVoucherAction{
+
+class GiftVoucherAction {
   dynamic giftVoucherAction;
   GiftVoucherAction(this.giftVoucherAction);
 }
-class StatusAction{
+
+class StatusAction {
   dynamic statusAction;
   StatusAction(this.statusAction);
 }
 
-class LogoutUserAction{
+class LogoutUserAction {
   dynamic logoutUserAction;
   LogoutUserAction(this.logoutUserAction);
 }
-class CurrentScreenAction{
+
+class CurrentScreenAction {
   dynamic currentScreenAction;
   CurrentScreenAction(this.currentScreenAction);
 }
-class AllImageAction{
+
+class AllImageAction {
   dynamic allImageAction;
   AllImageAction(this.allImageAction);
 }
-class DarkModeAction{
+
+class DarkModeAction {
   dynamic darkModeAction;
   DarkModeAction(this.darkModeAction);
 }
-class CartGetAction{
+
+class CartGetAction {
   dynamic cartGetAction;
   CartGetAction(this.cartGetAction);
 }
-class RatingAction{
+
+class RatingAction {
   dynamic ratingAction;
   RatingAction(this.ratingAction);
 }
-class UserAction{
+
+class UserAction {
   dynamic userAction;
   UserAction(this.userAction);
 }
-class DateAction{
+
+class DateAction {
   dynamic dateAction;
   DateAction(this.dateAction);
 }
-class TextDescriptionAction{
+
+class TextDescriptionAction {
   dynamic textDescriptionAction;
   TextDescriptionAction(this.textDescriptionAction);
 }
-class CartDataLogoutAction{
+
+class CartDataLogoutAction {
   dynamic cartDataLogoutAction;
   CartDataLogoutAction(this.cartDataLogoutAction);
 }
-class CanceledOrderAction{
+
+class CanceledOrderAction {
   dynamic canceledOrderAction;
   CanceledOrderAction(this.canceledOrderAction);
 }
-class SalePageAction{
+
+class SalePageAction {
   dynamic salePageAction;
   SalePageAction(this.salePageAction);
 }
-class UserProfilePicAction{
+
+class UserProfilePicAction {
   dynamic userProfilePicAction;
   UserProfilePicAction(this.userProfilePicAction);
 }
-class GetVariableProductLogout{
+
+class GetVariableProductLogout {
   dynamic getVariableProductLogout;
   GetVariableProductLogout(this.getVariableProductLogout);
 }
-class FloatingButtonAction{
+
+class FloatingButtonAction {
   dynamic floatingButtonAction;
   FloatingButtonAction(this.floatingButtonAction);
 }
