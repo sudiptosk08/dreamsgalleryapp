@@ -19,7 +19,22 @@ class _DescriptionState extends State<Description> {
   void initState() {
     _getRelatedProduct();
     _getProductInformation();
+     _onLoading();
     super.initState();
+  }
+  bool _loading = false;
+  
+void _onLoading() {
+    setState(() {
+      _loading = true;
+      new Future.delayed(new Duration(seconds: 2), _login);
+    });
+  }
+
+  Future _login() async {
+    setState(() {
+      _loading = false;
+    });
   }
 
   Future<void> _getRelatedProduct() async {
@@ -63,7 +78,7 @@ class _DescriptionState extends State<Description> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: store.state.isLoadingState == true
+        child: _loading == true
             ? Center(
                 child: CircularProgressIndicator(),
               )

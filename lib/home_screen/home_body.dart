@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
       var body = json.decode(resAllSliders.body);
 
       setState(() {
-        store.dispatch(PromotionalCardAction(body['promotionalCards']));
+        store.dispatch(PromotionalSkinCardAction(body['promotionalCards'][0]['image']));
+        store.dispatch(PromotionalMakeupCardAction(body['promotionalCards'][1]['image']));
       });
       setState(() {
         store.dispatch(IsLoadingAction(false)); //true chilo

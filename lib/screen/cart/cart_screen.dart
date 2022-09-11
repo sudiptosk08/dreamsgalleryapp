@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dream_gallary/api/api.dart';
 import 'package:dream_gallary/home_screen/home_screen.dart';
@@ -19,6 +20,21 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  bool _loading = false;
+
+  void _onLoading() {
+    setState(() {
+      _loading = true;
+      new Future.delayed(new Duration(milliseconds: 3400), _login);
+    });
+  }
+
+  Future _login() async {
+    setState(() {
+      _loading = false;
+    });
+  }
+
   List<dynamic> zoneListByCity = [];
   List<dynamic> areaListByZone = [];
   void initState() {
@@ -27,6 +43,7 @@ class _CartScreenState extends State<CartScreen> {
     _getAllDistrictApiData();
     _getAllZoneApiData();
     _getAllAreaApiData();
+    _onLoading();
     super.initState();
   }
 
@@ -332,84 +349,78 @@ class _CartScreenState extends State<CartScreen> {
               }),
           centerTitle: true,
         ),
-        body: store.state.cartGetState.isNotEmpty
-            ? SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Container(
-                  child: Column(children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: ClampingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: store.state.cartGetState.length,
-                      itemBuilder: (context, index) => Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 1.05 * SizeConfig.imageSizeMultiplier),
-                          child: Container(
-                            height: 30 * SizeConfig.imageSizeMultiplier,
-                            width: double.infinity,
-                            color: store.state.darkModeState == null ||
-                                    store.state.darkModeState == false
-                                ? kSecondaryColor.withOpacity(0.1)
-                                : Colors.grey[900],
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 2.5 * SizeConfig.imageSizeMultiplier,
-                                ),
-                                SizedBox(
-                                  width: 24 * SizeConfig.imageSizeMultiplier,
-                                  height: 24 * SizeConfig.imageSizeMultiplier,
-                                  child: AspectRatio(
-                                    aspectRatio: 0.88,
-                                    child: Container(
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Color(0xFFF5F6F9),
-                                        borderRadius: BorderRadius.circular(15),
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                              store.state.cartGetState[index]
-                                                  ['details']['img'],
-                                            )),
+        body: _loading == true
+            ? Center(child: CircularProgressIndicator())
+            : store.state.cartGetState.isNotEmpty
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Container(
+                      child: Column(children: [
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: ClampingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: store.state.cartGetState.length,
+                          itemBuilder: (context, index) => Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical:
+                                      1.05 * SizeConfig.imageSizeMultiplier),
+                              child: Container(
+                                height: 30 * SizeConfig.imageSizeMultiplier,
+                                width: double.infinity,
+                                color: store.state.darkModeState == null ||
+                                        store.state.darkModeState == false
+                                    ? kSecondaryColor.withOpacity(0.1)
+                                    : Colors.grey[900],
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width:
+                                          2.5 * SizeConfig.imageSizeMultiplier,
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          24 * SizeConfig.imageSizeMultiplier,
+                                      height:
+                                          24 * SizeConfig.imageSizeMultiplier,
+                                      child: AspectRatio(
+                                        aspectRatio: 0.88,
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFFF5F6F9),
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  store.state
+                                                          .cartGetState[index]
+                                                      ['details']['img'],
+                                                )),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                    width: 4 * SizeConfig.imageSizeMultiplier),
-                                Container(
-                                  width: 50 * SizeConfig.imageSizeMultiplier,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 2.6 *
-                                            SizeConfig.imageSizeMultiplier,
-                                      ),
-                                      RichText(
-                                        maxLines: 3,
-                                        text: TextSpan(
-                                            text:
-                                                "${store.state.cartGetState[index]['details']['productName']} ",
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                              fontSize: 10.5,
-                                            ),
-                                            children: [
-                                              TextSpan(
+                                    SizedBox(
+                                        width:
+                                            4 * SizeConfig.imageSizeMultiplier),
+                                    Container(
+                                      width:
+                                          50 * SizeConfig.imageSizeMultiplier,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 2.6 *
+                                                SizeConfig.imageSizeMultiplier,
+                                          ),
+                                          RichText(
+                                            maxLines: 3,
+                                            text: TextSpan(
                                                 text:
-                                                    "${store.state.cartGetState[index]['details']['model']} ",
+                                                    "${store.state.cartGetState[index]['details']['productName']} ",
                                                 style: KTextStyle.bodyText4
                                                     .copyWith(
                                                   color: store.state
@@ -422,552 +433,681 @@ class _CartScreenState extends State<CartScreen> {
                                                       : Colors.grey[400],
                                                   fontSize: 10.5,
                                                 ),
-                                              ),
-                                              store.state.cartGetState[index]
-                                                              ['details']
-                                                          ['color'] ==
-                                                      null
-                                                  ? TextSpan(
-                                                      text: "",
-                                                      style: KTextStyle
-                                                          .bodyText4
-                                                          .copyWith(
-                                                        color: store.state
-                                                                        .darkModeState ==
-                                                                    null ||
-                                                                store.state
-                                                                        .darkModeState ==
-                                                                    false
-                                                            ? Colors.black
-                                                            : Colors.grey[400],
-                                                        fontSize: 10.5,
-                                                      ),
-                                                    )
-                                                  : TextSpan(
-                                                      text:
-                                                          "${store.state.cartGetState[index]['details']['color']} ",
-                                                      style: KTextStyle
-                                                          .bodyText4
-                                                          .copyWith(
-                                                        color: store.state
-                                                                        .darkModeState ==
-                                                                    null ||
-                                                                store.state
-                                                                        .darkModeState ==
-                                                                    false
-                                                            ? Colors.black
-                                                            : Colors.grey[400],
-                                                        fontSize: 10.5,
-                                                      ),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        "${store.state.cartGetState[index]['details']['model']} ",
+                                                    style: KTextStyle.bodyText4
+                                                        .copyWith(
+                                                      color: store.state
+                                                                      .darkModeState ==
+                                                                  null ||
+                                                              store.state
+                                                                      .darkModeState ==
+                                                                  false
+                                                          ? Colors.black
+                                                          : Colors.grey[400],
+                                                      fontSize: 10.5,
                                                     ),
-                                              store.state.cartGetState[index]
-                                                          ['details']['size'] ==
-                                                      null
-                                                  ? TextSpan(
-                                                      text: "",
-                                                      style: KTextStyle
-                                                          .bodyText4
-                                                          .copyWith(
-                                                        color: store.state
-                                                                        .darkModeState ==
-                                                                    null ||
-                                                                store.state
-                                                                        .darkModeState ==
-                                                                    false
-                                                            ? Colors.black
-                                                            : Colors.grey[400],
-                                                        fontSize: 10.5,
+                                                  ),
+                                                  store.state.cartGetState[
+                                                                      index]
+                                                                  ['details']
+                                                              ['color'] ==
+                                                          null
+                                                      ? TextSpan(
+                                                          text: "",
+                                                          style: KTextStyle
+                                                              .bodyText4
+                                                              .copyWith(
+                                                            color: store.state
+                                                                            .darkModeState ==
+                                                                        null ||
+                                                                    store.state
+                                                                            .darkModeState ==
+                                                                        false
+                                                                ? Colors.black
+                                                                : Colors
+                                                                    .grey[400],
+                                                            fontSize: 10.5,
+                                                          ),
+                                                        )
+                                                      : TextSpan(
+                                                          text:
+                                                              "${store.state.cartGetState[index]['details']['color']} ",
+                                                          style: KTextStyle
+                                                              .bodyText4
+                                                              .copyWith(
+                                                            color: store.state
+                                                                            .darkModeState ==
+                                                                        null ||
+                                                                    store.state
+                                                                            .darkModeState ==
+                                                                        false
+                                                                ? Colors.black
+                                                                : Colors
+                                                                    .grey[400],
+                                                            fontSize: 10.5,
+                                                          ),
+                                                        ),
+                                                  store.state.cartGetState[
+                                                                      index]
+                                                                  ['details']
+                                                              ['size'] ==
+                                                          null
+                                                      ? TextSpan(
+                                                          text: "",
+                                                          style: KTextStyle
+                                                              .bodyText4
+                                                              .copyWith(
+                                                            color: store.state
+                                                                            .darkModeState ==
+                                                                        null ||
+                                                                    store.state
+                                                                            .darkModeState ==
+                                                                        false
+                                                                ? Colors.black
+                                                                : Colors
+                                                                    .grey[400],
+                                                            fontSize: 10.5,
+                                                          ),
+                                                        )
+                                                      : TextSpan(
+                                                          text: store.state
+                                                                      .cartGetState[
+                                                                  index][
+                                                              'details']['size'],
+                                                          style: KTextStyle
+                                                              .bodyText4
+                                                              .copyWith(
+                                                            color: store.state
+                                                                            .darkModeState ==
+                                                                        null ||
+                                                                    store.state
+                                                                            .darkModeState ==
+                                                                        false
+                                                                ? Colors.black
+                                                                : Colors
+                                                                    .grey[400],
+                                                            fontSize: 10.5,
+                                                          ),
+                                                        ),
+                                                ]),
+                                          ),
+                                          SizedBox(
+                                              height: 1.3 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier),
+                                          (store.state.cartGetState[index]
+                                                          ['mproduct']
+                                                      ['appDiscount'] >
+                                                  0)
+                                              ? Text.rich(
+                                                  TextSpan(
+                                                    text:
+                                                        "\৳${(store.state.cartGetState[index]['details']['sellingPrice'] - (store.state.cartGetState[index]['details']['sellingPrice'] * store.state.cartGetState[index]['mproduct']['appDiscount']) / 100).toInt()}",
+                                                    style: KTextStyle.bodyText4
+                                                        .copyWith(
+                                                      color: Colors.redAccent,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text:
+                                                            " x${store.state.cartGetState[index]['quantity']}",
+                                                        style: KTextStyle
+                                                            .bodyText4
+                                                            .copyWith(
+                                                          color: store.state
+                                                                          .darkModeState ==
+                                                                      null ||
+                                                                  store.state
+                                                                          .darkModeState ==
+                                                                      false
+                                                              ? Colors.black
+                                                              : Colors
+                                                                  .grey[400],
+                                                        ),
                                                       ),
-                                                    )
-                                                  : TextSpan(
-                                                      text: store.state
+                                                    ],
+                                                  ),
+                                                )
+                                              : Text.rich(
+                                                  TextSpan(
+                                                    text:
+                                                        "\৳${store.state.cartGetState[index]['details']['sellingPrice'].toInt()}",
+                                                    style: KTextStyle.bodyText4
+                                                        .copyWith(
+                                                      color: Colors.redAccent,
+                                                    ),
+                                                    children: [
+                                                      TextSpan(
+                                                        text:
+                                                            " x${store.state.cartGetState[index]['quantity']}",
+                                                        style: KTextStyle
+                                                            .bodyText4
+                                                            .copyWith(
+                                                          color: store.state
+                                                                          .darkModeState ==
+                                                                      null ||
+                                                                  store.state
+                                                                          .darkModeState ==
+                                                                      false
+                                                              ? Colors.black
+                                                              : Colors
+                                                                  .grey[400],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                          SizedBox(
+                                              height: 1.3 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier),
+                                          Container(
+                                            height: 25.5,
+                                            width: 95,
+                                            color: Colors.white,
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () {
+                                                      if (store.state
                                                                   .cartGetState[
-                                                              index]['details']
-                                                          ['size'],
-                                                      style: KTextStyle
-                                                          .bodyText4
-                                                          .copyWith(
-                                                        color: store.state
-                                                                        .darkModeState ==
-                                                                    null ||
-                                                                store.state
-                                                                        .darkModeState ==
-                                                                    false
-                                                            ? Colors.black
-                                                            : Colors.grey[400],
-                                                        fontSize: 10.5,
+                                                              index]['quantity'] >
+                                                          1) {
+                                                        setState(() {
+                                                          --store.state
+                                                                  .cartGetState[
+                                                              index]['quantity'];
+                                                          getUpdateQty();
+                                                          minusSubTotal();
+                                                        });
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 0.5,
+                                                              color:
+                                                                  Colors.grey)),
+                                                      width: 26,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Icon(
+                                                        FontAwesomeIcons.minus,
+                                                        size: 9,
+                                                        color: Colors.black,
                                                       ),
                                                     ),
-                                            ]),
-                                      ),
-                                      SizedBox(
-                                          height: 1.3 *
-                                              SizeConfig.imageSizeMultiplier),
-                                      (store.state.cartGetState[index]
-                                                  ['mproduct']['appDiscount'] >
-                                              0)
-                                          ? Text.rich(
-                                              TextSpan(
-                                                text:
-                                                    "\৳${(store.state.cartGetState[index]['details']['sellingPrice'] - (store.state.cartGetState[index]['details']['sellingPrice'] * store.state.cartGetState[index]['mproduct']['appDiscount']) / 100).toInt()}",
-                                                style: KTextStyle.bodyText4
-                                                    .copyWith(
-                                                  color: Colors.redAccent,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        " x${store.state.cartGetState[index]['quantity']}",
-                                                    style: KTextStyle.bodyText4
-                                                        .copyWith(
-                                                      color: store.state
-                                                                      .darkModeState ==
-                                                                  null ||
-                                                              store.state
-                                                                      .darkModeState ==
-                                                                  false
-                                                          ? Colors.black
-                                                          : Colors.grey[400],
-                                                    ),
                                                   ),
-                                                ],
-                                              ),
-                                            )
-                                          : Text.rich(
-                                              TextSpan(
-                                                text:
-                                                    "\৳${store.state.cartGetState[index]['details']['sellingPrice'].toInt()}",
-                                                style: KTextStyle.bodyText4
-                                                    .copyWith(
-                                                  color: Colors.redAccent,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        " x${store.state.cartGetState[index]['quantity']}",
-                                                    style: KTextStyle.bodyText4
-                                                        .copyWith(
-                                                      color: store.state
-                                                                      .darkModeState ==
-                                                                  null ||
-                                                              store.state
-                                                                      .darkModeState ==
-                                                                  false
-                                                          ? Colors.black
-                                                          : Colors.grey[400],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                      SizedBox(
-                                          height: 1.3 *
-                                              SizeConfig.imageSizeMultiplier),
-                                      Container(
-                                        height: 25.5,
-                                        width: 95,
-                                        color: Colors.white,
-                                        child: Container(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  if (store.state.cartGetState[
-                                                          index]['quantity'] >
-                                                      1) {
-                                                    setState(() {
-                                                      --store.state
-                                                              .cartGetState[
-                                                          index]['quantity'];
-                                                      getUpdateQty();
-                                                      minusSubTotal();
-                                                    });
-                                                  }
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
+                                                  Container(
+                                                    decoration: BoxDecoration(
                                                       border: Border.all(
                                                           width: 0.5,
-                                                          color: Colors.grey)),
-                                                  width: 26,
-                                                  alignment: Alignment.center,
-                                                  child: Icon(
-                                                    FontAwesomeIcons.minus,
-                                                    size: 9,
-                                                    color: Colors.black,
+                                                          color: Colors.grey),
+                                                      color: Colors.white,
+                                                    ),
+                                                    alignment: Alignment.center,
+                                                    width: 37,
+                                                    child: Text(
+                                                      store
+                                                          .state
+                                                          .cartGetState[index]
+                                                              ['quantity']
+                                                          .toString(),
+                                                      style: KTextStyle
+                                                          .bodyText4
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
+                                                              color:
+                                                                  Colors.black),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      width: 0.5,
-                                                      color: Colors.grey),
-                                                  color: Colors.white,
-                                                ),
-                                                alignment: Alignment.center,
-                                                width: 37,
-                                                child: Text(
-                                                  store
-                                                      .state
-                                                      .cartGetState[index]
-                                                          ['quantity']
-                                                      .toString(),
-                                                  style: KTextStyle.bodyText4
-                                                      .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.w300,
-                                                          color: Colors.black),
-                                                ),
-                                              ),
-                                              InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    if (stock !=
-                                                        store.state.cartGetState[
-                                                                index]
-                                                            ['quantity']) {
-                                                      store.state.cartGetState[
-                                                          index]['quantity']++;
-                                                      getUpdateQty();
-                                                      addSubTotal();
-                                                    } else {
-                                                      return _showMsg(
-                                                          "Product out of Stock!",
-                                                          1);
-                                                    }
-                                                  });
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        width: 0.5,
-                                                        color: Colors.grey),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        if (stock !=
+                                                            store.state.cartGetState[
+                                                                    index]
+                                                                ['quantity']) {
+                                                          store.state.cartGetState[
+                                                                  index]
+                                                              ['quantity']++;
+                                                          getUpdateQty();
+                                                          addSubTotal();
+                                                        } else {
+                                                          return _showMsg(
+                                                              "Product out of Stock!",
+                                                              1);
+                                                        }
+                                                      });
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 0.5,
+                                                            color: Colors.grey),
+                                                      ),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      width: 26,
+                                                      child: Icon(
+                                                        FontAwesomeIcons.plus,
+                                                        size: 9,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
                                                   ),
-                                                  alignment: Alignment.center,
-                                                  width: 26,
-                                                  child: Icon(
-                                                    FontAwesomeIcons.plus,
-                                                    size: 9,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                    width:
-                                        1.5 * SizeConfig.imageSizeMultiplier),
-                                Container(
-                                  width: 15 * SizeConfig.imageSizeMultiplier,
-                                  child: Column(
-                                    children: [
-                                      IconButton(
-                                          icon: Icon(FontAwesomeIcons.trashAlt),
-                                          color: Colors.grey[700],
-                                          iconSize: 18,
-                                          alignment: Alignment.topRight,
-                                          onPressed: () async {
-                                            setState(() {
-                                              //cartList.remove(store.state.cartGetState[index]['id']);
-                                              deleteFromCart();
-                                            });
-                                          }),
-                                      SizedBox(
-                                        height: 35,
-                                      ),
-                                      (store.state.cartGetState[index]
-                                                  ['mproduct']['appDiscount'] >
-                                              0)
-                                          ? Text(
-                                              "\৳${(store.state.cartGetState[index]['details']['sellingPrice'] - (store.state.cartGetState[index]['details']['sellingPrice'] * store.state.cartGetState[index]['mproduct']['appDiscount']) / 100).toInt() * store.state.cartGetState[index]['quantity']}",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: Colors.redAccent,
-                                              ),
-                                            )
-                                          : Text(
-                                              "\৳${store.state.cartGetState[index]['details']['sellingPrice'] * store.state.cartGetState[index]['quantity']}",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: Colors.redAccent,
+                                                ],
                                               ),
                                             ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          )),
-                    ),
-                    Container(
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(
-                                  2.1 * SizeConfig.imageSizeMultiplier),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Calculate Shipping",
-                                    style: KTextStyle.subtitle3.copyWith(
-                                      color: store.state.darkModeState ==
-                                                  null ||
-                                              store.state.darkModeState == false
-                                          ? Colors.black
-                                          : Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height:
-                                        1.6 * SizeConfig.imageSizeMultiplier,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width:
-                                            46 * SizeConfig.imageSizeMultiplier,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                        ),
-                                        child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 0.2 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier,
-                                                right: 0.2 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier,
-                                                bottom: 0.0 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showCity(context);
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                  vertical: 1.6 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                ),
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(8),
-                                                  ),
-                                                  color: store.state
-                                                                  .darkModeState ==
-                                                              null ||
-                                                          store.state
-                                                                  .darkModeState ==
-                                                              false
-                                                      ? kSecondaryColor
-                                                          .withOpacity(0.1)
-                                                      : Colors.grey[900],
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          12, 8, 12, 8),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        store.state.districtName ==
-                                                                null
-                                                            ? city.toString()
-                                                            : city
-                                                                .toString(), //brandTitle
-                                                        style: KTextStyle
-                                                            .bodyText4
-                                                            .copyWith(
-                                                          color: store.state
-                                                                          .darkModeState ==
-                                                                      null ||
-                                                                  store.state
-                                                                          .darkModeState ==
-                                                                      false
-                                                              ? Colors.black
-                                                              : Colors
-                                                                  .grey[400],
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .keyboard_arrow_down_outlined,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            )),
-                                      ),
-                                      SizedBox(
-                                        width: 3.8 *
-                                            SizeConfig.imageSizeMultiplier,
-                                      ),
-                                      Container(
-                                        width:
-                                            46 * SizeConfig.imageSizeMultiplier,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                        ),
-                                        child: Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 0.2 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier,
-                                                right: 0.2 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier,
-                                                bottom: 0.0 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                showZone(context);
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                  vertical: 1.6 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                ),
-                                                width: double.infinity,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(8),
-                                                  ),
-                                                  color: store.state
-                                                                  .darkModeState ==
-                                                              null ||
-                                                          store.state
-                                                                  .darkModeState ==
-                                                              false
-                                                      ? kSecondaryColor
-                                                          .withOpacity(0.1)
-                                                      : Colors.grey[900],
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          12, 8, 12, 8),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        store.state.zoneName ==
-                                                                null
-                                                            ? zone.toString()
-                                                            : zone
-                                                                .toString(), //brandTitle
-                                                        style: KTextStyle
-                                                            .bodyText4
-                                                            .copyWith(
-                                                          color: store.state
-                                                                          .darkModeState ==
-                                                                      null ||
-                                                                  store.state
-                                                                          .darkModeState ==
-                                                                      false
-                                                              ? Colors.black
-                                                              : Colors
-                                                                  .grey[400],
-                                                        ),
-                                                      ),
-                                                      Icon(
-                                                        Icons
-                                                            .keyboard_arrow_down_outlined,
-                                                        color: Colors.grey,
-                                                        size: 20,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            )),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7),
-                                ),
-                                child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: 0.2 *
-                                            SizeConfig.imageSizeMultiplier,
-                                        right: 0.2 *
-                                            SizeConfig.imageSizeMultiplier,
-                                        bottom: 0.0 *
-                                            SizeConfig.imageSizeMultiplier),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        showarea(context);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 2.1 *
-                                              SizeConfig.imageSizeMultiplier,
-                                          vertical: 1.6 *
-                                              SizeConfig.imageSizeMultiplier,
-                                        ),
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(8),
                                           ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                        width: 1.5 *
+                                            SizeConfig.imageSizeMultiplier),
+                                    Container(
+                                      width:
+                                          15 * SizeConfig.imageSizeMultiplier,
+                                      child: Column(
+                                        children: [
+                                          IconButton(
+                                              icon: Icon(
+                                                  FontAwesomeIcons.trashAlt),
+                                              color: Colors.grey[700],
+                                              iconSize: 18,
+                                              alignment: Alignment.topRight,
+                                              onPressed: () async {
+                                                setState(() {
+                                                  //cartList.remove(store.state.cartGetState[index]['id']);
+                                                  deleteFromCart();
+                                                });
+                                              }),
+                                          SizedBox(
+                                            height: 35,
+                                          ),
+                                          (store.state.cartGetState[index]
+                                                          ['mproduct']
+                                                      ['appDiscount'] >
+                                                  0)
+                                              ? Text(
+                                                  "\৳${(store.state.cartGetState[index]['details']['sellingPrice'] - (store.state.cartGetState[index]['details']['sellingPrice'] * store.state.cartGetState[index]['mproduct']['appDiscount']) / 100).toInt() * store.state.cartGetState[index]['quantity']}",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: Colors.redAccent,
+                                                  ),
+                                                )
+                                              : Text(
+                                                  "\৳${store.state.cartGetState[index]['details']['sellingPrice'] * store.state.cartGetState[index]['quantity']}",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: Colors.redAccent,
+                                                  ),
+                                                ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        ),
+                        Container(
+                            width: double.infinity,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      2.1 * SizeConfig.imageSizeMultiplier),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Calculate Shipping",
+                                        style: KTextStyle.subtitle3.copyWith(
                                           color: store.state.darkModeState ==
                                                       null ||
                                                   store.state.darkModeState ==
                                                       false
-                                              ? kSecondaryColor.withOpacity(0.1)
-                                              : Colors.grey[900],
+                                              ? Colors.black
+                                              : Colors.white,
                                         ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              12, 8, 12, 8),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                store.state.areaName == null
-                                                    ? area.toString()
-                                                    : area
-                                                        .toString(), //brandTitle
+                                      ),
+                                      SizedBox(
+                                        height: 1.6 *
+                                            SizeConfig.imageSizeMultiplier,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 46 *
+                                                SizeConfig.imageSizeMultiplier,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                            ),
+                                            child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0.2 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier,
+                                                    right: 0.2 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier,
+                                                    bottom: 0.0 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    showCity(context);
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 2.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                      vertical: 1.6 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                    ),
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(8),
+                                                      ),
+                                                      color: store.state
+                                                                      .darkModeState ==
+                                                                  null ||
+                                                              store.state
+                                                                      .darkModeState ==
+                                                                  false
+                                                          ? kSecondaryColor
+                                                              .withOpacity(0.1)
+                                                          : Colors.grey[900],
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          12, 8, 12, 8),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            store.state.districtName ==
+                                                                    null
+                                                                ? city
+                                                                    .toString()
+                                                                : city
+                                                                    .toString(), //brandTitle
+                                                            style: KTextStyle
+                                                                .bodyText4
+                                                                .copyWith(
+                                                              color: store.state
+                                                                              .darkModeState ==
+                                                                          null ||
+                                                                      store.state
+                                                                              .darkModeState ==
+                                                                          false
+                                                                  ? Colors.black
+                                                                  : Colors.grey[
+                                                                      400],
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .keyboard_arrow_down_outlined,
+                                                            color: Colors.grey,
+                                                            size: 20,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )),
+                                          ),
+                                          SizedBox(
+                                            width: 3.8 *
+                                                SizeConfig.imageSizeMultiplier,
+                                          ),
+                                          Container(
+                                            width: 46 *
+                                                SizeConfig.imageSizeMultiplier,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(7),
+                                            ),
+                                            child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 0.2 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier,
+                                                    right: 0.2 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier,
+                                                    bottom: 0.0 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    showZone(context);
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                      horizontal: 2.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                      vertical: 1.6 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                    ),
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(8),
+                                                      ),
+                                                      color: store.state
+                                                                      .darkModeState ==
+                                                                  null ||
+                                                              store.state
+                                                                      .darkModeState ==
+                                                                  false
+                                                          ? kSecondaryColor
+                                                              .withOpacity(0.1)
+                                                          : Colors.grey[900],
+                                                    ),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          12, 8, 12, 8),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            store.state.zoneName ==
+                                                                    null
+                                                                ? zone
+                                                                    .toString()
+                                                                : zone
+                                                                    .toString(), //brandTitle
+                                                            style: KTextStyle
+                                                                .bodyText4
+                                                                .copyWith(
+                                                              color: store.state
+                                                                              .darkModeState ==
+                                                                          null ||
+                                                                      store.state
+                                                                              .darkModeState ==
+                                                                          false
+                                                                  ? Colors.black
+                                                                  : Colors.grey[
+                                                                      400],
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .keyboard_arrow_down_outlined,
+                                                            color: Colors.grey,
+                                                            size: 20,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 0.2 *
+                                                SizeConfig.imageSizeMultiplier,
+                                            right: 0.2 *
+                                                SizeConfig.imageSizeMultiplier,
+                                            bottom: 0.0 *
+                                                SizeConfig.imageSizeMultiplier),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showarea(context);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 2.1 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                              vertical: 1.6 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                            ),
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              color: store.state
+                                                              .darkModeState ==
+                                                          null ||
+                                                      store.state
+                                                              .darkModeState ==
+                                                          false
+                                                  ? kSecondaryColor
+                                                      .withOpacity(0.1)
+                                                  : Colors.grey[900],
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      12, 8, 12, 8),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    store.state.areaName == null
+                                                        ? area.toString()
+                                                        : area
+                                                            .toString(), //brandTitle
+                                                    style: KTextStyle.bodyText4
+                                                        .copyWith(
+                                                      color: store.state
+                                                                      .darkModeState ==
+                                                                  null ||
+                                                              store.state
+                                                                      .darkModeState ==
+                                                                  false
+                                                          ? Colors.black
+                                                          : Colors.grey[400],
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .keyboard_arrow_down_outlined,
+                                                    color: Colors.grey,
+                                                    size: 20,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                if (store.state.referralCodeState == null)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 2.1 *
+                                            SizeConfig.imageSizeMultiplier,
+                                        right: 2.1 *
+                                            SizeConfig.imageSizeMultiplier),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Promo Code",
+                                          style: KTextStyle.subtitle3.copyWith(
+                                            color: store.state.darkModeState ==
+                                                        null ||
+                                                    store.state.darkModeState ==
+                                                        false
+                                                ? Colors.black
+                                                : Colors.white,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 1.6 *
+                                              SizeConfig.imageSizeMultiplier,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 46 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                              decoration: BoxDecoration(
+                                                color: store.state
+                                                                .darkModeState ==
+                                                            null ||
+                                                        store.state
+                                                                .darkModeState ==
+                                                            false
+                                                    ? store.state.promoCodeState ==
+                                                            null
+                                                        ? kSecondaryColor
+                                                            .withOpacity(0.1)
+                                                        : Colors.grey[400]
+                                                    : Colors.grey[900],
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: TextFormField(
                                                 style: KTextStyle.bodyText4
                                                     .copyWith(
                                                   color: store.state
@@ -977,68 +1117,122 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .darkModeState ==
                                                               false
                                                       ? Colors.black
-                                                      : Colors.grey[400],
+                                                      : Colors.white,
+                                                ),
+                                                controller: promoCode,
+                                                readOnly: store.state
+                                                            .promoCodeState !=
+                                                        null
+                                                    ? true
+                                                    : false,
+                                                decoration: InputDecoration(
+                                                  contentPadding: EdgeInsets.symmetric(
+                                                      horizontal: 2.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                      vertical: 3.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier),
+                                                  border: InputBorder.none,
+                                                  hintText: "Promo Code",
+                                                  hintStyle: KTextStyle
+                                                      .bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.grey
+                                                        : Colors.grey[400],
+                                                  ),
+                                                  focusedBorder:
+                                                      InputBorder.none,
+                                                  enabledBorder:
+                                                      InputBorder.none,
                                                 ),
                                               ),
-                                              Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_outlined,
-                                                color: Colors.grey,
-                                                size: 20,
+                                            ),
+                                            SizedBox(
+                                              width: 4 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  store.state.promoCodeState ==
+                                                          null
+                                                      ? promoCodeApply()
+                                                      : clear();
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 45.7 *
+                                                    SizeConfig
+                                                        .imageSizeMultiplier,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black,
+                                                  borderRadius:
+                                                      BorderRadius.circular(7),
+                                                ),
+                                                child: Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal: 2.1 *
+                                                            SizeConfig
+                                                                .imageSizeMultiplier,
+                                                        vertical: 3.6 *
+                                                            SizeConfig
+                                                                .imageSizeMultiplier),
+                                                    child: store.state
+                                                                .promoCodeState ==
+                                                            null
+                                                        ? Text("Apply Code",
+                                                            style: KTextStyle
+                                                                .buttonText4
+                                                                .copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center)
+                                                        : Text("Clear",
+                                                            style: KTextStyle
+                                                                .buttonText4
+                                                                .copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center)),
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    )),
-                              ),
-                            ),
-                            if (store.state.referralCodeState == null)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 2.1 * SizeConfig.imageSizeMultiplier,
-                                    right:
-                                        2.1 * SizeConfig.imageSizeMultiplier),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Promo Code",
-                                      style: KTextStyle.subtitle3.copyWith(
-                                        color:
-                                            store.state.darkModeState == null ||
-                                                    store.state.darkModeState ==
-                                                        false
-                                                ? Colors.black
-                                                : Colors.white,
-                                      ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height:
-                                          1.6 * SizeConfig.imageSizeMultiplier,
-                                    ),
-                                    Row(
+                                  ),
+                                SizedBox(
+                                  height: 1.8 * SizeConfig.imageSizeMultiplier,
+                                ),
+                                if (store.state.promoCodeState == null &&
+                                    store.state.userDataState['customer']
+                                            ['barcode'] ==
+                                        0)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 2.1 *
+                                            SizeConfig.imageSizeMultiplier,
+                                        right: 2.1 *
+                                            SizeConfig.imageSizeMultiplier),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          width: 46 *
-                                              SizeConfig.imageSizeMultiplier,
-                                          decoration: BoxDecoration(
-                                            color: store.state.darkModeState ==
-                                                        null ||
-                                                    store.state.darkModeState ==
-                                                        false
-                                                ? store.state.promoCodeState ==
-                                                        null
-                                                    ? kSecondaryColor
-                                                        .withOpacity(0.1)
-                                                    : Colors.grey[400]
-                                                : Colors.grey[900],
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: TextFormField(
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
+                                        Text(
+                                          "Refferal Code",
+                                          style: GoogleFonts.montserrat(
                                               color: store.state
                                                               .darkModeState ==
                                                           null ||
@@ -1047,145 +1241,198 @@ class _CartScreenState extends State<CartScreen> {
                                                           false
                                                   ? Colors.black
                                                   : Colors.white,
-                                            ),
-                                            controller: promoCode,
-                                            readOnly:
-                                                store.state.promoCodeState !=
-                                                        null
-                                                    ? true
-                                                    : false,
-                                            decoration: InputDecoration(
-                                              contentPadding: EdgeInsets.symmetric(
-                                                  horizontal: 2.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                  vertical: 3.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier),
-                                              border: InputBorder.none,
-                                              hintText: "Promo Code",
-                                              hintStyle:
-                                                  KTextStyle.bodyText4.copyWith(
+                                              fontSize: 3 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier),
+                                        ),
+                                        SizedBox(
+                                          height: 1.6 *
+                                              SizeConfig.imageSizeMultiplier,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              width: 46 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                              decoration: BoxDecoration(
                                                 color: store.state
                                                                 .darkModeState ==
                                                             null ||
                                                         store.state
                                                                 .darkModeState ==
                                                             false
-                                                    ? Colors.grey
-                                                    : Colors.grey[400],
+                                                    ? store.state.promoCodeState ==
+                                                            null
+                                                        ? kSecondaryColor
+                                                            .withOpacity(0.1)
+                                                        : Colors.grey[400]
+                                                    : Colors.grey[900],
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
                                               ),
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 4 *
-                                              SizeConfig.imageSizeMultiplier,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              store.state.promoCodeState == null
-                                                  ? promoCodeApply()
-                                                  : clear();
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 45.7 *
-                                                SizeConfig.imageSizeMultiplier,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              borderRadius:
-                                                  BorderRadius.circular(7),
-                                            ),
-                                            child: Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 2.1 *
-                                                        SizeConfig
-                                                            .imageSizeMultiplier,
-                                                    vertical: 3.6 *
+                                              child: TextFormField(
+                                                style: TextStyle(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.white,
+                                                    fontSize: 3 *
                                                         SizeConfig
                                                             .imageSizeMultiplier),
-                                                child: store.state
-                                                            .promoCodeState ==
+                                                controller: referralCode,
+                                                readOnly: store.state
+                                                            .referralCodeState !=
                                                         null
-                                                    ? Text("Apply Code",
-                                                        style: KTextStyle
-                                                            .buttonText4
-                                                            .copyWith(
-                                                          color: Colors.white,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.center)
-                                                    : Text("Clear",
-                                                        style: KTextStyle
-                                                            .buttonText4
-                                                            .copyWith(
-                                                          color: Colors.white,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.center)),
-                                          ),
+                                                    ? true
+                                                    : false,
+                                                decoration: InputDecoration(
+                                                  contentPadding: EdgeInsets.symmetric(
+                                                      horizontal: 2.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                      vertical: 3.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier),
+                                                  border: InputBorder.none,
+                                                  hintText: "Refferal Code",
+                                                  hintStyle:
+                                                      GoogleFonts.montserrat(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.grey
+                                                        : Colors.grey[400],
+                                                    fontSize: 3 *
+                                                        SizeConfig
+                                                            .imageSizeMultiplier,
+                                                  ),
+                                                  focusedBorder:
+                                                      InputBorder.none,
+                                                  enabledBorder:
+                                                      InputBorder.none,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 4 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                setState(() {
+                                                  store.state.referralCodeState ==
+                                                          null
+                                                      ? referralCodeApply()
+                                                      : clear();
+                                                });
+                                              },
+                                              child: Container(
+                                                width: 45.7 *
+                                                    SizeConfig
+                                                        .imageSizeMultiplier,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black,
+                                                  borderRadius:
+                                                      BorderRadius.circular(7),
+                                                ),
+                                                child: Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal: 2.1 *
+                                                            SizeConfig
+                                                                .imageSizeMultiplier,
+                                                        vertical: 3.6 *
+                                                            SizeConfig
+                                                                .imageSizeMultiplier),
+                                                    child: store.state
+                                                                .referralCodeState ==
+                                                            null
+                                                        ? Text("Apply Code",
+                                                            style: KTextStyle
+                                                                .buttonText4
+                                                                .copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center)
+                                                        : Text("Clear",
+                                                            style: KTextStyle
+                                                                .buttonText4
+                                                                .copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center)),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ],
+                                  ),
+                                SizedBox(
+                                  height: 1.8 * SizeConfig.imageSizeMultiplier,
                                 ),
-                              ),
-                            SizedBox(
-                              height: 1.8 * SizeConfig.imageSizeMultiplier,
-                            ),
-                            if (store.state.promoCodeState == null &&
-                                store.state.userDataState['customer']
-                                        ['barcode'] ==
-                                    0)
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    left: 2.1 * SizeConfig.imageSizeMultiplier,
-                                    right:
-                                        2.1 * SizeConfig.imageSizeMultiplier),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Refferal Code",
-                                      style: GoogleFonts.montserrat(
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left:
+                                          2.1 * SizeConfig.imageSizeMultiplier,
+                                      right:
+                                          2.1 * SizeConfig.imageSizeMultiplier),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Gift Voucher",
+                                        style: KTextStyle.subtitle3.copyWith(
                                           color: store.state.darkModeState ==
                                                       null ||
                                                   store.state.darkModeState ==
                                                       false
                                               ? Colors.black
                                               : Colors.white,
-                                          fontSize: 3 *
-                                              SizeConfig.imageSizeMultiplier),
-                                    ),
-                                    SizedBox(
-                                      height:
-                                          1.6 * SizeConfig.imageSizeMultiplier,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Container(
-                                          width: 46 *
-                                              SizeConfig.imageSizeMultiplier,
-                                          decoration: BoxDecoration(
-                                            color: store.state.darkModeState ==
-                                                        null ||
-                                                    store.state.darkModeState ==
-                                                        false
-                                                ? store.state.promoCodeState ==
-                                                        null
-                                                    ? kSecondaryColor
-                                                        .withOpacity(0.1)
-                                                    : Colors.grey[400]
-                                                : Colors.grey[900],
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: TextFormField(
-                                            style: TextStyle(
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 1.6 *
+                                            SizeConfig.imageSizeMultiplier,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Container(
+                                            width: 45.7 *
+                                                SizeConfig.imageSizeMultiplier,
+                                            decoration: BoxDecoration(
+                                              color: store.state
+                                                              .darkModeState ==
+                                                          null ||
+                                                      store.state
+                                                              .darkModeState ==
+                                                          false
+                                                  ? store.state
+                                                              .promoCodeState ==
+                                                          null
+                                                      ? kSecondaryColor
+                                                          .withOpacity(0.1)
+                                                      : Colors.grey[400]
+                                                  : Colors.grey[900],
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: TextFormField(
+                                              style:
+                                                  KTextStyle.bodyText4.copyWith(
                                                 color: store.state
                                                                 .darkModeState ==
                                                             null ||
@@ -1194,414 +1441,146 @@ class _CartScreenState extends State<CartScreen> {
                                                             false
                                                     ? Colors.black
                                                     : Colors.white,
-                                                fontSize: 3 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier),
-                                            controller: referralCode,
-                                            readOnly:
-                                                store.state.referralCodeState !=
-                                                        null
-                                                    ? true
-                                                    : false,
-                                            decoration: InputDecoration(
-                                              contentPadding: EdgeInsets.symmetric(
-                                                  horizontal: 2.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                  vertical: 3.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier),
-                                              border: InputBorder.none,
-                                              hintText: "Refferal Code",
-                                              hintStyle: GoogleFonts.montserrat(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.grey
-                                                    : Colors.grey[400],
-                                                fontSize: 3 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier,
                                               ),
-                                              focusedBorder: InputBorder.none,
-                                              enabledBorder: InputBorder.none,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 4 *
-                                              SizeConfig.imageSizeMultiplier,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              store.state.referralCodeState ==
+                                              controller: giftVoucherCode,
+                                              readOnly: store.state
+                                                          .giftVoucherState !=
                                                       null
-                                                  ? referralCodeApply()
-                                                  : clear();
-                                            });
-                                          },
-                                          child: Container(
-                                            width: 45.7 *
-                                                SizeConfig.imageSizeMultiplier,
-                                            decoration: BoxDecoration(
-                                              color: Colors.black,
-                                              borderRadius:
-                                                  BorderRadius.circular(7),
-                                            ),
-                                            child: Padding(
-                                                padding: EdgeInsets.symmetric(
+                                                  ? true
+                                                  : false,
+                                              decoration: InputDecoration(
+                                                contentPadding: EdgeInsets.symmetric(
                                                     horizontal: 2.1 *
                                                         SizeConfig
                                                             .imageSizeMultiplier,
-                                                    vertical: 3.6 *
+                                                    vertical: 3.1 *
                                                         SizeConfig
                                                             .imageSizeMultiplier),
-                                                child: store.state
-                                                            .referralCodeState ==
-                                                        null
-                                                    ? Text("Apply Code",
-                                                        style: KTextStyle
-                                                            .buttonText4
-                                                            .copyWith(
-                                                          color: Colors.white,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.center)
-                                                    : Text("Clear",
-                                                        style: KTextStyle
-                                                            .buttonText4
-                                                            .copyWith(
-                                                          color: Colors.white,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.center)),
+                                                border: InputBorder.none,
+                                                hintText: "Gift Voucher",
+                                                hintStyle: KTextStyle.bodyText4
+                                                    .copyWith(
+                                                  color: store.state
+                                                                  .darkModeState ==
+                                                              null ||
+                                                          store.state
+                                                                  .darkModeState ==
+                                                              false
+                                                      ? Colors.grey
+                                                      : Colors.grey[400],
+                                                ),
+                                                focusedBorder: InputBorder.none,
+                                                enabledBorder: InputBorder.none,
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          SizedBox(
+                                            width: 4 *
+                                                SizeConfig.imageSizeMultiplier,
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                store.state.giftVoucherState ==
+                                                        null
+                                                    ? giftVoucherApply()
+                                                    : voucherClear();
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 46 *
+                                                  SizeConfig
+                                                      .imageSizeMultiplier,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(7),
+                                              ),
+                                              child: Padding(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 2.1 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier,
+                                                      vertical: 3.6 *
+                                                          SizeConfig
+                                                              .imageSizeMultiplier),
+                                                  child: store.state
+                                                              .giftVoucherState ==
+                                                          null
+                                                      ? Text("Apply Code",
+                                                          style: KTextStyle
+                                                              .buttonText4
+                                                              .copyWith(
+                                                            color: Colors.white,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center)
+                                                      : Text("Clear",
+                                                          style: KTextStyle
+                                                              .buttonText4
+                                                              .copyWith(
+                                                            color: Colors.white,
+                                                          ),
+                                                          textAlign: TextAlign
+                                                              .center)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            SizedBox(
-                              height: 1.8 * SizeConfig.imageSizeMultiplier,
+                                SizedBox(
+                                  height: 2 * SizeConfig.imageSizeMultiplier,
+                                )
+                              ],
+                            )),
+                        Padding(
+                          padding: EdgeInsets.all(
+                              2.1 * SizeConfig.imageSizeMultiplier),
+                          child: Container(
+                            height: 55 * SizeConfig.imageSizeMultiplier,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: store.state.darkModeState == null ||
+                                      store.state.darkModeState == false
+                                  ? kSecondaryColor.withOpacity(0.1)
+                                  : Colors.grey[900],
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 2.1 * SizeConfig.imageSizeMultiplier,
-                                  right: 2.1 * SizeConfig.imageSizeMultiplier),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Gift Voucher",
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(
+                                      3.5 * SizeConfig.imageSizeMultiplier),
+                                  child: Text(
+                                    "Cart Summary",
                                     style: KTextStyle.subtitle3.copyWith(
                                       color: store.state.darkModeState ==
                                                   null ||
                                               store.state.darkModeState == false
                                           ? Colors.black
-                                          : Colors.white,
+                                          : Colors.grey[400],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height:
-                                        1.6 * SizeConfig.imageSizeMultiplier,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 45.7 *
-                                            SizeConfig.imageSizeMultiplier,
-                                        decoration: BoxDecoration(
-                                          color: store.state.darkModeState ==
-                                                      null ||
-                                                  store.state.darkModeState ==
-                                                      false
-                                              ? store.state.promoCodeState ==
-                                                      null
-                                                  ? kSecondaryColor
-                                                      .withOpacity(0.1)
-                                                  : Colors.grey[400]
-                                              : Colors.grey[900],
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: TextFormField(
-                                          style: KTextStyle.bodyText4.copyWith(
-                                            color: store.state.darkModeState ==
-                                                        null ||
-                                                    store.state.darkModeState ==
-                                                        false
-                                                ? Colors.black
-                                                : Colors.white,
-                                          ),
-                                          controller: giftVoucherCode,
-                                          readOnly:
-                                              store.state.giftVoucherState !=
-                                                      null
-                                                  ? true
-                                                  : false,
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 2.1 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier,
-                                                vertical: 3.1 *
-                                                    SizeConfig
-                                                        .imageSizeMultiplier),
-                                            border: InputBorder.none,
-                                            hintText: "Gift Voucher",
-                                            hintStyle:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.grey
-                                                  : Colors.grey[400],
-                                            ),
-                                            focusedBorder: InputBorder.none,
-                                            enabledBorder: InputBorder.none,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            4 * SizeConfig.imageSizeMultiplier,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            store.state.giftVoucherState == null
-                                                ? giftVoucherApply()
-                                                : voucherClear();
-                                          });
-                                        },
-                                        child: Container(
-                                          width: 46 *
-                                              SizeConfig.imageSizeMultiplier,
-                                          decoration: BoxDecoration(
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(7),
-                                          ),
-                                          child: Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 2.1 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier,
-                                                  vertical: 3.6 *
-                                                      SizeConfig
-                                                          .imageSizeMultiplier),
-                                              child: store.state
-                                                          .giftVoucherState ==
-                                                      null
-                                                  ? Text("Apply Code",
-                                                      style: KTextStyle
-                                                          .buttonText4
-                                                          .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center)
-                                                  : Text("Clear",
-                                                      style: KTextStyle
-                                                          .buttonText4
-                                                          .copyWith(
-                                                        color: Colors.white,
-                                                      ),
-                                                      textAlign:
-                                                          TextAlign.center)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 2 * SizeConfig.imageSizeMultiplier,
-                            )
-                          ],
-                        )),
-                    Padding(
-                      padding:
-                          EdgeInsets.all(2.1 * SizeConfig.imageSizeMultiplier),
-                      child: Container(
-                        height: 55 * SizeConfig.imageSizeMultiplier,
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          color: store.state.darkModeState == null ||
-                                  store.state.darkModeState == false
-                              ? kSecondaryColor.withOpacity(0.1)
-                              : Colors.grey[900],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.all(
-                                  3.5 * SizeConfig.imageSizeMultiplier),
-                              child: Text(
-                                "Cart Summary",
-                                style: KTextStyle.subtitle3.copyWith(
-                                  color: store.state.darkModeState == null ||
-                                          store.state.darkModeState == false
-                                      ? Colors.black
-                                      : Colors.grey[400],
                                 ),
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      3.5 * SizeConfig.imageSizeMultiplier,
-                                      0.0 * SizeConfig.imageSizeMultiplier,
-                                      3.5 * SizeConfig.imageSizeMultiplier,
-                                      0.0 * SizeConfig.imageSizeMultiplier),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          3.5 * SizeConfig.imageSizeMultiplier,
+                                          0.0 * SizeConfig.imageSizeMultiplier,
+                                          3.5 * SizeConfig.imageSizeMultiplier,
+                                          0.0 * SizeConfig.imageSizeMultiplier),
+                                      child: Column(
                                         children: [
-                                          Text(
-                                            "Sub Total",
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                            ),
-                                          ),
-                                          Text(
-                                            store.state.subTotalState != null
-                                                ? "${store.state.subTotalState}"
-                                                : "${store.state.subTotalState = 0}",
-                                            style: KTextStyle.caption.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1.3 *
-                                            SizeConfig.imageSizeMultiplier,
-                                      ),
-                                      if (store.state.promoCodeState != null)
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Promo Code Discount(${store.state.promoCodeState['discount'].toString()}\%)",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
-                                              ),
-                                            ),
-                                            Text(
-                                              "${((store.state.subTotalState * store.state.promoCodeState['discount']) / 100).ceil()}",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      if (store.state.userDataState['customer']
-                                                  ['barcode'] !=
-                                              null &&
-                                          store.state.promoCodeState == null)
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Membership Discount(10%)",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
-                                              ),
-                                            ),
-                                            Text(
-                                              "${((store.state.subTotalState * 10) / 100).ceil()}",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      if (store.state.referralCodeState != null)
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Referral Discount(5%)",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
-                                              ),
-                                            ),
-                                            Text(
-                                                "${((store.state.subTotalState * 5) / 100).ceil()}",
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Sub Total",
                                                 style: KTextStyle.bodyText4
                                                     .copyWith(
                                                   color: store.state
@@ -1612,226 +1591,41 @@ class _CartScreenState extends State<CartScreen> {
                                                               false
                                                       ? Colors.black
                                                       : Colors.grey[400],
-                                                ))
-                                          ],
-                                        ),
-                                      if (store.state.giftVoucherState != null)
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Gift Voucher(${giftVoucherCode.text})",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
+                                                ),
                                               ),
-                                            ),
-                                            Text(
-                                              "${store.state.giftVoucherState['amount']}",
-                                              style:
-                                                  KTextStyle.bodyText4.copyWith(
-                                                color: store.state
-                                                                .darkModeState ==
-                                                            null ||
-                                                        store.state
-                                                                .darkModeState ==
-                                                            false
-                                                    ? Colors.black
-                                                    : Colors.grey[400],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  indent: 15,
-                                  endIndent: 15,
-                                  color: store.state.darkModeState == null ||
-                                          store.state.darkModeState == false
-                                      ? Colors.black
-                                      : Colors.grey[400],
-                                  height: 4 * SizeConfig.imageSizeMultiplier,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      3.5 * SizeConfig.imageSizeMultiplier,
-                                      0.0 * SizeConfig.imageSizeMultiplier,
-                                      3.5 * SizeConfig.imageSizeMultiplier,
-                                      0.0 * SizeConfig.imageSizeMultiplier),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Grand Total",
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                            ),
+                                              Text(
+                                                store.state.subTotalState !=
+                                                        null
+                                                    ? "${store.state.subTotalState}"
+                                                    : "${store.state.subTotalState = 0}",
+                                                style:
+                                                    KTextStyle.caption.copyWith(
+                                                  color: store.state
+                                                                  .darkModeState ==
+                                                              null ||
+                                                          store.state
+                                                                  .darkModeState ==
+                                                              false
+                                                      ? Colors.black
+                                                      : Colors.grey[400],
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          store.state.giftVoucherState != null
-                                              ? Text(
-                                                  grandTotal = store.state
-                                                              .promoCodeState !=
-                                                          null
-                                                      ? "${((store.state.subTotalState - (store.state.subTotalState * store.state.promoCodeState['discount']) / 100) - store.state.giftVoucherState['amount']).toInt()}"
-                                                      : store.state
-                                                                  .referralCodeState !=
-                                                              null
-                                                          ? "${((store.state.subTotalState - (store.state.subTotalState * 5) / 100) - store.state.giftVoucherState['amount']).toInt()}"
-                                                          : store.state.userDataState[
-                                                                          'customer']
-                                                                      [
-                                                                      'barcode'] !=
-                                                                  null
-                                                              ? "${((store.state.subTotalState - (store.state.subTotalState * 10) / 100) - store.state.giftVoucherState['amount']).toInt()}"
-                                                              : "${store.state.subTotalState - store.state.giftVoucherState['amount']}",
-                                                  style: KTextStyle.bodyText4
-                                                      .copyWith(
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.black
-                                                        : Colors.grey[400],
-                                                  ),
-                                                )
-                                              : Text(
-                                                  grandTotal = store.state
-                                                              .promoCodeState !=
-                                                          null
-                                                      ? "${(store.state.subTotalState - (store.state.subTotalState * store.state.promoCodeState['discount']) / 100).toInt()}"
-                                                      : store.state
-                                                                  .referralCodeState !=
-                                                              null
-                                                          ? "${(store.state.subTotalState - (store.state.subTotalState * 5) / 100).toInt()}"
-                                                          : store.state.userDataState[
-                                                                          'customer']
-                                                                      [
-                                                                      'barcode'] !=
-                                                                  null
-                                                              ? "${(store.state.subTotalState - (store.state.subTotalState * 10) / 100).toInt()}"
-                                                              : "${store.state.subTotalState}",
-                                                  style: KTextStyle.bodyText4
-                                                      .copyWith(
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.black
-                                                        : Colors.grey[400],
-                                                  ),
-                                                )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1.3 *
-                                            SizeConfig.imageSizeMultiplier,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Rounding(+-)",
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                            ),
+                                          SizedBox(
+                                            height: 1.3 *
+                                                SizeConfig.imageSizeMultiplier,
                                           ),
-                                          Text(
-                                            roundingAmount =
-                                                (int.parse(grandTotal) % 10)
-                                                    .toString(),
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 1.3 *
-                                            SizeConfig.imageSizeMultiplier,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Shipping Cost",
-                                            style:
-                                                KTextStyle.bodyText4.copyWith(
-                                              color: store.state
-                                                              .darkModeState ==
-                                                          null ||
-                                                      store.state
-                                                              .darkModeState ==
-                                                          false
-                                                  ? Colors.black
-                                                  : Colors.grey[400],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.all(0),
-                                            child: _shippingCost(),
-                                          ),
-                                          (store.state.subTotalState != null &&
-                                                  store.state.subTotalState >
-                                                      3000)
-                                              ? Text(
-                                                  "0",
-                                                  style: KTextStyle.bodyText4
-                                                      .copyWith(
-                                                    color: store.state
-                                                                    .darkModeState ==
-                                                                null ||
-                                                            store.state
-                                                                    .darkModeState ==
-                                                                false
-                                                        ? Colors.black
-                                                        : Colors.grey[400],
-                                                  ),
-                                                )
-                                              : Text(
-                                                  shippingCost.toString(),
+                                          if (store.state.promoCodeState !=
+                                              null)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Promo Code Discount(${store.state.promoCodeState['discount'].toString()}\%)",
                                                   style: KTextStyle.bodyText4
                                                       .copyWith(
                                                     color: store.state
@@ -1844,97 +1638,437 @@ class _CartScreenState extends State<CartScreen> {
                                                         : Colors.grey[400],
                                                   ),
                                                 ),
+                                                Text(
+                                                  "${((store.state.subTotalState * store.state.promoCodeState['discount']) / 100).ceil()}",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.grey[400],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          if (store.state.userDataState[
+                                                      'customer']['barcode'] !=
+                                                  null &&
+                                              store.state.promoCodeState ==
+                                                  null)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Membership Discount(10%)",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.grey[400],
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${((store.state.subTotalState * 10) / 100).ceil()}",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.grey[400],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          if (store.state.referralCodeState !=
+                                              null)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Referral Discount(5%)",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.grey[400],
+                                                  ),
+                                                ),
+                                                Text(
+                                                    "${((store.state.subTotalState * 5) / 100).ceil()}",
+                                                    style: KTextStyle.bodyText4
+                                                        .copyWith(
+                                                      color: store.state
+                                                                      .darkModeState ==
+                                                                  null ||
+                                                              store.state
+                                                                      .darkModeState ==
+                                                                  false
+                                                          ? Colors.black
+                                                          : Colors.grey[400],
+                                                    ))
+                                              ],
+                                            ),
+                                          if (store.state.giftVoucherState !=
+                                              null)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  "Gift Voucher(${giftVoucherCode.text})",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.grey[400],
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "${store.state.giftVoucherState['amount']}",
+                                                  style: KTextStyle.bodyText4
+                                                      .copyWith(
+                                                    color: store.state
+                                                                    .darkModeState ==
+                                                                null ||
+                                                            store.state
+                                                                    .darkModeState ==
+                                                                false
+                                                        ? Colors.black
+                                                        : Colors.grey[400],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Divider(
-                                  indent: 15,
-                                  endIndent: 15,
-                                  color: store.state.darkModeState == null ||
-                                          store.state.darkModeState == false
-                                      ? Colors.black
-                                      : Colors.grey[400],
-                                  height: 4 * SizeConfig.imageSizeMultiplier,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      3.5 * SizeConfig.imageSizeMultiplier,
-                                      0.0 * SizeConfig.imageSizeMultiplier,
-                                      3.5 * SizeConfig.imageSizeMultiplier,
-                                      0.0 * SizeConfig.imageSizeMultiplier),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Total",
-                                        style: KTextStyle.bodyText4.copyWith(
-                                          color: store.state.darkModeState ==
-                                                      null ||
-                                                  store.state.darkModeState ==
-                                                      false
-                                              ? Colors.black
-                                              : Colors.grey[400],
-                                        ),
+                                    ),
+                                    Divider(
+                                      indent: 15,
+                                      endIndent: 15,
+                                      color: store.state.darkModeState ==
+                                                  null ||
+                                              store.state.darkModeState == false
+                                          ? Colors.black
+                                          : Colors.grey[400],
+                                      height:
+                                          4 * SizeConfig.imageSizeMultiplier,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          3.5 * SizeConfig.imageSizeMultiplier,
+                                          0.0 * SizeConfig.imageSizeMultiplier,
+                                          3.5 * SizeConfig.imageSizeMultiplier,
+                                          0.0 * SizeConfig.imageSizeMultiplier),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Grand Total",
+                                                style: KTextStyle.bodyText4
+                                                    .copyWith(
+                                                  color: store.state
+                                                                  .darkModeState ==
+                                                              null ||
+                                                          store.state
+                                                                  .darkModeState ==
+                                                              false
+                                                      ? Colors.black
+                                                      : Colors.grey[400],
+                                                ),
+                                              ),
+                                              store.state.giftVoucherState !=
+                                                      null
+                                                  ? Text(
+                                                      grandTotal = store.state
+                                                                  .promoCodeState !=
+                                                              null
+                                                          ? "${((store.state.subTotalState - (store.state.subTotalState * store.state.promoCodeState['discount']) / 100) - store.state.giftVoucherState['amount']).toInt()}"
+                                                          : store.state
+                                                                      .referralCodeState !=
+                                                                  null
+                                                              ? "${((store.state.subTotalState - (store.state.subTotalState * 5) / 100) - store.state.giftVoucherState['amount']).toInt()}"
+                                                              : store.state.userDataState[
+                                                                              'customer']
+                                                                          [
+                                                                          'barcode'] !=
+                                                                      null
+                                                                  ? "${((store.state.subTotalState - (store.state.subTotalState * 10) / 100) - store.state.giftVoucherState['amount']).toInt()}"
+                                                                  : "${store.state.subTotalState - store.state.giftVoucherState['amount']}",
+                                                      style: KTextStyle
+                                                          .bodyText4
+                                                          .copyWith(
+                                                        color: store.state
+                                                                        .darkModeState ==
+                                                                    null ||
+                                                                store.state
+                                                                        .darkModeState ==
+                                                                    false
+                                                            ? Colors.black
+                                                            : Colors.grey[400],
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      grandTotal = store.state
+                                                                  .promoCodeState !=
+                                                              null
+                                                          ? "${(store.state.subTotalState - (store.state.subTotalState * store.state.promoCodeState['discount']) / 100).toInt()}"
+                                                          : store.state
+                                                                      .referralCodeState !=
+                                                                  null
+                                                              ? "${(store.state.subTotalState - (store.state.subTotalState * 5) / 100).toInt()}"
+                                                              : store.state.userDataState[
+                                                                              'customer']
+                                                                          [
+                                                                          'barcode'] !=
+                                                                      null
+                                                                  ? "${(store.state.subTotalState - (store.state.subTotalState * 10) / 100).toInt()}"
+                                                                  : "${store.state.subTotalState}",
+                                                      style: KTextStyle
+                                                          .bodyText4
+                                                          .copyWith(
+                                                        color: store.state
+                                                                        .darkModeState ==
+                                                                    null ||
+                                                                store.state
+                                                                        .darkModeState ==
+                                                                    false
+                                                            ? Colors.black
+                                                            : Colors.grey[400],
+                                                      ),
+                                                    )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 1.3 *
+                                                SizeConfig.imageSizeMultiplier,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Rounding(+-)",
+                                                style: KTextStyle.bodyText4
+                                                    .copyWith(
+                                                  color: store.state
+                                                                  .darkModeState ==
+                                                              null ||
+                                                          store.state
+                                                                  .darkModeState ==
+                                                              false
+                                                      ? Colors.black
+                                                      : Colors.grey[400],
+                                                ),
+                                              ),
+                                              Text(
+                                                roundingAmount =
+                                                    (int.parse(grandTotal) % 10)
+                                                        .toString(),
+                                                style: KTextStyle.bodyText4
+                                                    .copyWith(
+                                                  color: store.state
+                                                                  .darkModeState ==
+                                                              null ||
+                                                          store.state
+                                                                  .darkModeState ==
+                                                              false
+                                                      ? Colors.black
+                                                      : Colors.grey[400],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 1.3 *
+                                                SizeConfig.imageSizeMultiplier,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "Shipping Cost",
+                                                style: KTextStyle.bodyText4
+                                                    .copyWith(
+                                                  color: store.state
+                                                                  .darkModeState ==
+                                                              null ||
+                                                          store.state
+                                                                  .darkModeState ==
+                                                              false
+                                                      ? Colors.black
+                                                      : Colors.grey[400],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.all(0),
+                                                child: _shippingCost(),
+                                              ),
+                                              (store.state.subTotalState !=
+                                                          null &&
+                                                      store.state
+                                                              .subTotalState >
+                                                          3000)
+                                                  ? Text(
+                                                      "0",
+                                                      style: KTextStyle
+                                                          .bodyText4
+                                                          .copyWith(
+                                                        color: store.state
+                                                                        .darkModeState ==
+                                                                    null ||
+                                                                store.state
+                                                                        .darkModeState ==
+                                                                    false
+                                                            ? Colors.black
+                                                            : Colors.grey[400],
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      shippingCost.toString(),
+                                                      style: KTextStyle
+                                                          .bodyText4
+                                                          .copyWith(
+                                                        color: store.state
+                                                                        .darkModeState ==
+                                                                    null ||
+                                                                store.state
+                                                                        .darkModeState ==
+                                                                    false
+                                                            ? Colors.black
+                                                            : Colors.grey[400],
+                                                      ),
+                                                    ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        store.state.subTotalState != null &&
-                                                store.state.subTotalState >=
-                                                    3000
-                                            ? "\৳${(0 + (int.parse(grandTotal) - int.parse(roundingAmount))).toString()}"
-                                            : "\৳${(shippingCost + (int.parse(grandTotal) - int.parse(roundingAmount))).toString()}",
-                                        style: KTextStyle.bodyText4.copyWith(
-                                          color: store.state.darkModeState ==
-                                                      null ||
-                                                  store.state.darkModeState ==
-                                                      false
-                                              ? Colors.black
-                                              : Colors.grey[400],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                    Divider(
+                                      indent: 15,
+                                      endIndent: 15,
+                                      color: store.state.darkModeState ==
+                                                  null ||
+                                              store.state.darkModeState == false
+                                          ? Colors.black
+                                          : Colors.grey[400],
+                                      height:
+                                          4 * SizeConfig.imageSizeMultiplier,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          3.5 * SizeConfig.imageSizeMultiplier,
+                                          0.0 * SizeConfig.imageSizeMultiplier,
+                                          3.5 * SizeConfig.imageSizeMultiplier,
+                                          0.0 * SizeConfig.imageSizeMultiplier),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Total",
+                                            style:
+                                                KTextStyle.bodyText4.copyWith(
+                                              color: store.state
+                                                              .darkModeState ==
+                                                          null ||
+                                                      store.state
+                                                              .darkModeState ==
+                                                          false
+                                                  ? Colors.black
+                                                  : Colors.grey[400],
+                                            ),
+                                          ),
+                                          Text(
+                                            store.state.subTotalState != null &&
+                                                    store.state.subTotalState >=
+                                                        3000
+                                                ? "\৳${(0 + (int.parse(grandTotal) - int.parse(roundingAmount))).toString()}"
+                                                : "\৳${(shippingCost + (int.parse(grandTotal) - int.parse(roundingAmount))).toString()}",
+                                            style:
+                                                KTextStyle.bodyText4.copyWith(
+                                              color: store.state
+                                                              .darkModeState ==
+                                                          null ||
+                                                      store.state
+                                                              .darkModeState ==
+                                                          false
+                                                  ? Colors.black
+                                                  : Colors.grey[400],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ]),
-                ),
-              )
-            : Container(
-                alignment: Alignment.center,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/empty-cart.png",
-                        color: store.state.darkModeState == null ||
-                                store.state.darkModeState == false
-                            ? Colors.grey
-                            : Colors.grey[700],
-                        height: 25 * SizeConfig.imageSizeMultiplier,
-                        width: 25 * SizeConfig.imageSizeMultiplier,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "Your Shopping Bag is Empty!",
-                        style: KTextStyle.subtitle2.copyWith(
-                          color: store.state.darkModeState == null ||
-                                  store.state.darkModeState == false
-                              ? Colors.grey
-                              : Colors.grey[700],
-                        ),
-                      )
-                    ]),
-              ),
+                          ),
+                        )
+                      ]),
+                    ),
+                  )
+                : Container(
+                    alignment: Alignment.center,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/empty-cart.png",
+                            color: store.state.darkModeState == null ||
+                                    store.state.darkModeState == false
+                                ? Colors.grey
+                                : Colors.grey[700],
+                            height: 25 * SizeConfig.imageSizeMultiplier,
+                            width: 25 * SizeConfig.imageSizeMultiplier,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Your Shopping Bag is Empty!",
+                            style: KTextStyle.subtitle2.copyWith(
+                              color: store.state.darkModeState == null ||
+                                      store.state.darkModeState == false
+                                  ? Colors.grey
+                                  : Colors.grey[700],
+                            ),
+                          )
+                        ]),
+                  ),
         bottomNavigationBar: store.state.cartGetState.isEmpty
             ? null
             : Padding(

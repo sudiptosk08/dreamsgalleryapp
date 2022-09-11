@@ -4,7 +4,8 @@ class AppState {
   var groupProductState;
   var brandProductState;
   var featureProductState;
-  var promotionalCardState;
+  var promotionalSkinCardState;
+  var promotionalMakeupCardState;
   var latestProductState;
   var discountState;
   var shopPageState;
@@ -112,7 +113,8 @@ class AppState {
     this.groupProductState,
     this.brandProductState,
     this.featureProductState,
-    this.promotionalCardState,
+    this.promotionalSkinCardState,
+    this.promotionalMakeupCardState,
     this.latestProductState,
     this.discountState,
     this.shopPageState,
@@ -194,7 +196,8 @@ class AppState {
     groupProductState,
     brandProductState,
     featureProductState,
-    promotionalCardState,
+    promotionalSkinCardState,
+    promotionalMakeupCardState,
     latestProductState,
     discountState,
     shopPageState,
@@ -276,7 +279,8 @@ class AppState {
       groupProductState: groupProductState ?? this.groupProductState,
       brandProductState: brandProductState ?? this.brandProductState,
       featureProductState: featureProductState ?? this.featureProductState,
-      promotionalCardState: promotionalCardState ?? this.promotionalCardState,
+      promotionalSkinCardState: promotionalSkinCardState ?? this.promotionalSkinCardState,
+      promotionalMakeupCardState: promotionalMakeupCardState ?? this.promotionalMakeupCardState,
       latestProductState: latestProductState ?? this.latestProductState,
       discountState: discountState ?? this.discountState,
       shopPageState: shopPageState ?? this.shopPageState,

@@ -23,9 +23,13 @@ class FeatureProductAction {
   FeatureProductAction(this.featureProductAction);
 }
 
-class PromotionalCardAction {
-  dynamic promotionalCardAction;
-  PromotionalCardAction(this.promotionalCardAction);
+class PromotionalSkinCardAction {
+  dynamic promotionalSkinCardAction;
+  PromotionalSkinCardAction(this.promotionalSkinCardAction);
+}
+class PromotionalMakeupCardAction {
+  dynamic promotionalMakeupCardAction;
+  PromotionalMakeupCardAction(this.promotionalMakeupCardAction);
 }
 
 class LatestProductAction {

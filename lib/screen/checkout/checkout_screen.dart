@@ -2569,7 +2569,6 @@ class _CheckOutState extends State<CheckOut> {
   }
 
   Future<void> placeOrder() async {
-
     dynamic newAddress = {
       'name': recipientName.text,
       'email': recipientEmail.text,
@@ -2598,12 +2597,18 @@ class _CheckOutState extends State<CheckOut> {
           ? "Promo Code"
           : store.state.referralCodeState != null
               ? "Referral Code"
-              : "",
+              : store.state.userDataState['customer']['barcode'] != null &&
+                      store.state.promoCodeState == null
+                  ? "MemberShip Discount"
+                  : 0,
       'discount': store.state.promoCodeState != null
           ? store.state.promoCodeState['discount']
           : store.state.referralCodeState != null
               ? 5
-              : 0,
+              : store.state.userDataState['customer']['barcode'] != null &&
+                      store.state.promoCodeState == null
+                  ? 10
+                  : 0,
       'referralCode': store.state.referralCodeState != null
           ? store.state.referralCodeState['barcode']
           : "",
@@ -2683,7 +2688,8 @@ class _CheckOutState extends State<CheckOut> {
       store.state.getVariableProductState = null;
       store.state.promoCodeState = null;
       store.state.referralCodeState = null;
-      store.state.giftVoucherState = null; 
+      store.state.giftVoucherState = null;
+      store.state.cartDataLogoutState = null;
       if (data['paymentType'] == 'sslcommerz') {
         var tranId = "PX${body['order']['id'].toString()}";
         var grandTotal = double.parse(data['grandTotal']) +
@@ -2700,7 +2706,7 @@ class _CheckOutState extends State<CheckOut> {
           customerPhone: phone.toString(),
           customerPostCode: postalCode.toString(),
         ).payNow();
-        
+
         if (result is PlatformException) {
           print("the response is: " +
               result.message.toString() +
@@ -2721,7 +2727,7 @@ class _CheckOutState extends State<CheckOut> {
                   builder: (BuildContext context) => PaymentSuccessfull()),
               ModalRoute.withName('/'),
             );
-          } else{
+          } else {
             Navigator.pushAndRemoveUntil<void>(
               context,
               MaterialPageRoute<void>(

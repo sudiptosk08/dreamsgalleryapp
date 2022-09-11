@@ -58,6 +58,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
   var getSingleProductColor;
   var getSingleProductSize;
   int mproductId = 0;
+  
 
   @override
   void initState() {
@@ -69,10 +70,12 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     _getVariableProduct();
     _getAllImages();
     _getCart();
+   
     super.initState();
     _tabController = TabController(length: _pages.length, vsync: this);
   }
 
+  
   Future<void> _getCart() async {
     //var data = store.state.cartDataState;
     var resAllCart = await CallApi().getData('/app/cart');
@@ -90,7 +93,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    
   }
 
   Future<void> _getVariableProduct() async {
@@ -136,7 +138,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-   
+
     List.generate(
         store.state.singleProductColor.length,
         (index) => getSingleProductColor =
@@ -157,7 +159,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-    
+
     List.generate(
         store.state.singleProductSize.length,
         (index) => getSingleProductSize =
@@ -178,7 +180,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-   
   }
 
   Future<void> _getProductId() async {
@@ -203,7 +204,6 @@ class _ProductDetailPageState extends State<ProductDetailPage>
     } else {
       print("hello");
     }
-   
   }
 
   Future<void> _getAllImages() async {
@@ -243,8 +243,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    return store.state.isLoadingState == false
-        ? WillPopScope(
+    return  WillPopScope(
             onWillPop: () async {
               print("Back button press");
               store.state.ratingState = null;
@@ -465,8 +464,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                                         left: 1.9 *
                                             SizeConfig.imageSizeMultiplier),
                                     child: Text(
-                                      store.state
-                                          .singleProductRating["productName"],
+                                      widget.name,
                                       style: KTextStyle.bodyText4.copyWith(
                                         color:
                                             store.state.darkModeState == null ||
@@ -931,7 +929,8 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                                 ],
                               ),
                             ),
-                            (store.state.getVariableProductState != null && store.state.userDataState != null)
+                            (store.state.getVariableProductState != null &&
+                                    store.state.userDataState != null)
                                 ? InkWell(
                                     onTap: () {
                                       setState(() {
@@ -1033,8 +1032,7 @@ class _ProductDetailPageState extends State<ProductDetailPage>
                       ],
                     )),
               ),
-            ))
-        : CircularProgressIndicator();
+            ));
   }
 
   showCustomSizeDialog(BuildContext context) => showDialog(

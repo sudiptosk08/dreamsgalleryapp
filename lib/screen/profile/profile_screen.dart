@@ -60,7 +60,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
       },
       child: Scaffold(
-        body: Body(),
+        body: SingleChildScrollView(
+            scrollDirection: Axis.vertical, child: Body()),
       ),
     );
   }
